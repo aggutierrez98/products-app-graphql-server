@@ -1,5 +1,8 @@
-type InputError {
+type Error {
     message: String!
+}
+type InputError {
+    error: Error!
 }
 
 type Role {
@@ -70,6 +73,12 @@ type SearchResults {
     results: [CollectionsTypes!]!
 }
 
+type AuthResults { 
+    user: User!
+    token: String
+}
+
+union AuthResponse = AuthResults | InputError
 union ProductResponse = Product | InputError
 union UserResponse = User | InputError
 union CategoryResponse = Category | InputError

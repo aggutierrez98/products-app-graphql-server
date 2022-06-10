@@ -2,12 +2,12 @@
 import { IResolvers } from "@graphql-tools/utils";
 
 const resolvers: IResolvers = {
-  UserResponse: {
+  AuthResponse: {
     __resolveType: (data: any) => {
       let type: string;
 
-      if (data.name) type = "User";
-      else type = "InputError";
+      if (data.error) type = "InputError";
+      else type = "AuthResults"
 
       return type;
     },

@@ -1,21 +1,17 @@
-import { User, UserSchema } from "../models";
+import { UserSchema } from "../models";
 import { generateJWT } from "../helpers";
 import { googleVerify } from "../helpers/google-verify";
 import { AuthInputValidator } from "../validators";
-
-type UserResponse = {
-  msg: string;
-  ok: boolean;
-  data: User | null;
-  token: unknown;
-};
+import { UserServiceResponse } from "../interfaces/users";
 
 interface LoginParams {
   email: string;
   password: string;
 }
 
-export const login = async (params: LoginParams): Promise<UserResponse> => {
+export const login = async (
+  params: LoginParams
+): Promise<UserServiceResponse> => {
   try {
     const { email, password } = params;
 
@@ -25,22 +21,22 @@ export const login = async (params: LoginParams): Promise<UserResponse> => {
     const token = await generateJWT(user.id);
 
     return {
-      msg: "",
+      error: null,
       ok: true,
-      data: user,
-      token,
+      data: { user, token },
     };
   } catch (error: any) {
     return {
       ok: false,
-      msg: error.message,
-      data: null,
-      token: null,
+      error: { message: error.message },
+      data: { user: null, token: null },
     };
   }
 };
 
-export const googleSignIn = async (id_token: string): Promise<UserResponse> => {
+export const googleSignIn = async (
+  id_token: string
+): Promise<UserServiceResponse> => {
   try {
     const { email, name, image } = await googleVerify(id_token);
 
@@ -61,27 +57,25 @@ export const googleSignIn = async (id_token: string): Promise<UserResponse> => {
 
     if (!user.active) {
       return {
-        msg: "Server error: User blocked",
+        error: { message: "Server error: User blocked" },
         ok: false,
-        data: null,
-        token: null,
+        data: { user: null, token: null },
       };
     }
 
     const token = await generateJWT(user.id);
 
     return {
-      msg: "",
+      error: null,
       ok: true,
-      data: user,
+      data: { user, token },
       token,
     };
   } catch (e) {
     return {
-      msg: "Google token not valid",
+      error: { message: "Google token not valid" },
       ok: false,
-      data: null,
-      token: null,
+      data: { user: null, token: null },
     };
   }
 };

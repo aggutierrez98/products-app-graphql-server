@@ -1,5 +1,6 @@
 import { isValidObjectId } from "mongoose";
 import { ALLOWED_COLLECTIONS } from "../constants";
+import { SearchServiceResponse } from "../interfaces/search";
 import {
   UserSchema,
   CategorySchema,
@@ -13,12 +14,6 @@ import { SearchInputValidator } from "../validators";
 interface SearchParams {
   term: string;
   collection: typeof ALLOWED_COLLECTIONS[number];
-}
-
-interface SearchResponse {
-  results: Product[] | Category[] | User[] | null;
-  ok: boolean;
-  msg: string;
 }
 
 const searchUsers = async (searchTerm = ""): Promise<User[]> => {
@@ -102,7 +97,9 @@ const searchProducts = async (searchTerm = ""): Promise<Product[]> => {
   return products;
 };
 
-export const search = async (params: SearchParams): Promise<SearchResponse> => {
+export const search = async (
+  params: SearchParams
+): Promise<SearchServiceResponse> => {
   let { collection, term } = params;
   let results: any = null;
 
@@ -126,13 +123,13 @@ export const search = async (params: SearchParams): Promise<SearchResponse> => {
     return {
       ok: true,
       results,
-      msg: "",
+      error: null,
     };
   } catch (error: any) {
     return {
       ok: false,
       results,
-      msg: error.message,
+      error: { message: error.message },
     };
   }
 };

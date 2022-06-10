@@ -10,37 +10,49 @@ import { InputError } from "../../interfaces/index";
 
 const mutation: IResolvers<any, ContextInterface> = {
   Mutation: {
-    async createProduct(__: void, { product }, { error }): Promise<Product | InputError> {
-      if (error) return error;
+    async createProduct(
+      __: void,
+      { product },
+      { error: contextError }
+    ): Promise<Product | InputError> {
+      if (contextError) return { error: contextError };
 
-      const { ok, msg, data } = await createProduct(product);
+      const { ok, error, data } = await createProduct(product);
 
       if (ok) {
         return data!;
       } else {
-        return { message: msg };
+        return { error: error! };
       }
     },
-    async updateProduct(__: void, { product }, { error }): Promise<Product | InputError> {
-      if (error) return error;
+    async updateProduct(
+      __: void,
+      { product },
+      { error: contextError }
+    ): Promise<Product | InputError> {
+      if (contextError) return { error: contextError };
 
-      const { ok, msg, data } = await updateProduct(product);
+      const { ok, error, data } = await updateProduct(product);
 
       if (ok) {
         return data!;
       } else {
-        return { message: msg };
+        return { error: error! };
       }
     },
-    async deleteProduct(__: void, { id }, { error }): Promise<Product | InputError> {
-      if (error) return error;
+    async deleteProduct(
+      __: void,
+      { id },
+      { error: contextError }
+    ): Promise<Product | InputError> {
+      if (contextError) return { error: contextError };
 
-      const { ok, msg, data } = await deleteProduct(id);
+      const { ok, error, data } = await deleteProduct(id);
 
       if (ok) {
         return data!;
       } else {
-        return { message: msg };
+        return { error: error! };
       }
     },
   },

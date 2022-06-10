@@ -5,8 +5,8 @@ const resolvers: IResolvers = {
     __resolveType: (data: any) => {
       let type: string;
 
-      if (data.results) type = "SearchResults";
-      else type = "InputError";
+      if (data.error) type = "InputError";
+      else type = "SearchResults";
 
       return type;
     },

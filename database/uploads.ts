@@ -8,6 +8,10 @@ import { v2 as cloudinary } from "cloudinary";
 import { Product, ProductSchema, User, UserSchema } from "../models";
 import { uploadFile } from "../helpers";
 import { UploadInputValidator } from "../validators";
+import {
+  UpdateServiceResponse,
+  UploadServiceResponse,
+} from "../interfaces/uploads";
 
 interface UploadImageParams {
   image: GraphQLUpload;
@@ -20,21 +24,9 @@ interface UpdateImageParams
   extends ImageInCollectionParams,
     UploadImageParams {}
 
-interface UpdateResponse {
-  data: { imagePath: string } | null;
-  ok: boolean;
-  msg: string;
-}
-
-interface UploadResponse {
-  data: Product | User | null;
-  ok: boolean;
-  msg: string;
-}
-
 export const uploadImage = async ({
   image,
-}: UploadImageParams): Promise<UpdateResponse> => {
+}: UploadImageParams): Promise<UploadServiceResponse> => {
   try {
     const fileName = await uploadFile(image, undefined, "imgs");
     const filePath = `uploads/imgs/${fileName}`;
@@ -43,11 +35,11 @@ export const uploadImage = async ({
         imagePath: filePath,
       },
       ok: true,
-      msg: "",
+      error: null,
     };
   } catch (error: any) {
     console.log(error);
-    return { msg: error.message, ok: false, data: null };
+    return { error: { message: error.message }, ok: false, data: null };
   }
 };
 
@@ -55,7 +47,7 @@ export const updateImage = async ({
   id,
   collection,
   image,
-}: UpdateImageParams): Promise<UploadResponse> => {
+}: UpdateImageParams): Promise<UpdateServiceResponse> => {
   try {
     UploadInputValidator.uploadv.validate({ id, collection });
 
@@ -66,7 +58,7 @@ export const updateImage = async ({
         document = await UserSchema.findById(id);
         if (!document)
           return {
-            msg: `User with id ${id} not exists`,
+            error: { message: `User with id ${id} not exists` },
             ok: false,
             data: null,
           };
@@ -76,7 +68,7 @@ export const updateImage = async ({
         document = await ProductSchema.findById(id);
         if (!document)
           return {
-            msg: `Product with id ${id} not exists`,
+            error: { message: `Product with id ${id} not exists` },
             ok: false,
             data: null,
           };
@@ -84,7 +76,9 @@ export const updateImage = async ({
 
       default:
         return {
-          msg: `Collection ${collection} image upload not implemented yet`,
+          error: {
+            message: `Collection ${collection} image upload not implemented yet`,
+          },
           ok: false,
           data: null,
         };
@@ -110,10 +104,10 @@ export const updateImage = async ({
     return {
       data: document,
       ok: true,
-      msg: "",
+      error: null,
     };
   } catch (error: any) {
-    return { msg: error.message, ok: false, data: null };
+    return { error: { message: error.message }, ok: false, data: null };
   }
 };
 
@@ -121,7 +115,7 @@ export const updateImageCloudinary = async ({
   id,
   collection,
   image,
-}: UpdateImageParams): Promise<UploadResponse> => {
+}: UpdateImageParams): Promise<UpdateServiceResponse> => {
   let document: (Document<any, BeAnObject, any> & User & Product) | null;
 
   try {
@@ -130,7 +124,7 @@ export const updateImageCloudinary = async ({
         document = await UserSchema.findById(id).populate("role");
         if (!document)
           return {
-            msg: `User with id ${id} not exists`,
+            error: { message: `User with id ${id} not exists` },
             ok: false,
             data: null,
           };
@@ -149,7 +143,7 @@ export const updateImageCloudinary = async ({
         ]);
         if (!document)
           return {
-            msg: `Product with id ${id} not exists`,
+            error: { message: `Product with id ${id} not exists` },
             ok: false,
             data: null,
           };
@@ -157,7 +151,9 @@ export const updateImageCloudinary = async ({
 
       default:
         return {
-          msg: `Collection ${collection} image upload not implemented yet`,
+          error: {
+            message: `Collection ${collection} image upload not implemented yet`,
+          },
           ok: false,
           data: null,
         };
@@ -187,9 +183,9 @@ export const updateImageCloudinary = async ({
     return {
       data: document,
       ok: true,
-      msg: "",
+      error: null,
     };
   } catch (error: any) {
-    return { msg: error.message, ok: false, data: null };
+    return { error: { message: error.message }, ok: false, data: null };
   }
 };

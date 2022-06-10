@@ -2,6 +2,7 @@ import bcryptjs from "bcryptjs";
 import { UserSchema, User } from "../models";
 import { generateJWT } from "../helpers";
 import { UserInputValidator } from "../validators";
+import { UserServiceResponse } from "../interfaces/users";
 
 interface GetUsersParams {
   limit: number;
@@ -24,13 +25,6 @@ interface UpdateUserParams {
   role?: string;
 }
 
-type UserResponse = {
-  msg: string;
-  ok: boolean;
-  data: User | null;
-  token: unknown;
-};
-
 export const getUsers = async ({
   limit = 5,
   skip = 0,
@@ -47,7 +41,7 @@ export const getUsers = async ({
 
 export const createUser = async (
   params: CreateUserParams
-): Promise<UserResponse> => {
+): Promise<UserServiceResponse> => {
   try {
     const { name, email, password, role } = params;
 
@@ -69,23 +63,21 @@ export const createUser = async (
     const token = await generateJWT(user.id);
     return {
       ok: true,
-      msg: "",
-      data: user,
-      token,
+      error: null,
+      data: { user, token },
     };
   } catch (error: any) {
     return {
       ok: false,
-      msg: error.message,
-      data: null,
-      token: null,
+      error: { message: error.message },
+      data: { user: null, token: null },
     };
   }
 };
 
 export const updateUser = async (
   params: UpdateUserParams
-): Promise<UserResponse> => {
+): Promise<UserServiceResponse> => {
   try {
     const { id, password, role, google, email, ...rest } = params;
 
@@ -108,21 +100,19 @@ export const updateUser = async (
 
     return {
       ok: true,
-      msg: "",
-      data: user,
-      token: null,
+      error: null,
+      data: { user, token: null },
     };
   } catch (error: any) {
     return {
       ok: false,
-      msg: error.message,
-      data: null,
-      token: null,
+      error: { message: error.message },
+      data: { user: null, token: null },
     };
   }
 };
 
-export const deleteUser = async (id: string): Promise<UserResponse> => {
+export const deleteUser = async (id: string): Promise<UserServiceResponse> => {
   try {
     await UserInputValidator.deletev.validateAsync({ id });
 
@@ -134,16 +124,14 @@ export const deleteUser = async (id: string): Promise<UserResponse> => {
 
     return {
       ok: true,
-      msg: "",
-      data: user,
-      token: null,
+      error: null,
+      data: { user, token: null },
     };
   } catch (error: any) {
     return {
       ok: false,
-      msg: error.message,
-      data: null,
-      token: null,
+      error: { message: error.message },
+      data: { user: null, token: null },
     };
   }
 };

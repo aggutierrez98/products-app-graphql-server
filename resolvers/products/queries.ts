@@ -1,21 +1,16 @@
 import { IResolvers } from "@graphql-tools/utils";
 import { getProduct, getProducts } from "../../database/products";
-import { ContextInterface, InputError } from "../../interfaces";
-import { Product } from "../../models";
-
-interface GetProductsResult {
-  products: Product[];
-  count: number;
-}
+import { ContextInterface } from "../../interfaces";
+import { ProductResults } from "../../interfaces/products";
 
 const query: IResolvers<any, ContextInterface> = {
   Query: {
     async getProducts(
       _: void,
       params,
-      { error }
-    ): Promise<GetProductsResult | InputError> {
-      if (error) return { message: error.message };
+      { error: contextError }
+    ): ProductResults {
+      if (contextError) return { error: contextError };
 
       const [count, products] = await getProducts(params);
       return { products, count };
@@ -23,16 +18,16 @@ const query: IResolvers<any, ContextInterface> = {
     async getProduct(
       _: void,
       { id },
-      { error }
-    ): Promise<Product | InputError> {
-      if (error) return { message: error.message };
+      { error: contextError }
+    ): ProductResults {
+      if (contextError) return { error: contextError };
 
-      const { data, msg, ok } = await getProduct(id);
+      const { data, error, ok } = await getProduct(id);
 
       if (ok) {
         return data!;
       } else {
-        return { message: msg };
+        return { error: error! };
       }
     },
   },

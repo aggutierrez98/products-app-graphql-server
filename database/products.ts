@@ -1,6 +1,7 @@
 import { ProductSchema, Product } from "../models";
 import { ObjectId } from "mongodb";
 import { ProductInputValidator } from "../validators";
+import { ProductServiceResponse } from "../interfaces/products";
 
 interface GetProductsParams {
   limit: number;
@@ -23,12 +24,6 @@ interface UpdateProductParams {
   user?: string;
   category?: string;
 }
-
-type ProductResponse = {
-  msg: string;
-  ok: boolean;
-  data: Product | null;
-};
 
 export const getProducts = async ({
   limit = 5,
@@ -56,7 +51,7 @@ export const getProducts = async ({
   return [total, products];
 };
 
-export const getProduct = async (id: string): Promise<ProductResponse> => {
+export const getProduct = async (id: string): Promise<ProductServiceResponse> => {
   try {
     await ProductInputValidator.getv.validateAsync({ id });
 
@@ -72,14 +67,14 @@ export const getProduct = async (id: string): Promise<ProductResponse> => {
     ]);
 
     return {
-      msg: "",
+      error: null,
       data: product,
       ok: true,
     };
   } catch (error: any) {
     return {
       ok: false,
-      msg: error.message,
+      error: { message: error.message },
       data: null,
     };
   }
@@ -87,7 +82,7 @@ export const getProduct = async (id: string): Promise<ProductResponse> => {
 
 export const createProduct = async (
   params: CreateProductParams
-): Promise<ProductResponse> => {
+): Promise<ProductServiceResponse> => {
   try {
     await ProductInputValidator.createv.validateAsync(params);
 
@@ -116,13 +111,13 @@ export const createProduct = async (
 
     return {
       ok: true,
-      msg: "",
+      error: null,
       data: product,
     };
   } catch (error: any) {
     return {
       ok: false,
-      msg: error.message,
+      error: { message: error.message },
       data: null,
     };
   }
@@ -130,7 +125,7 @@ export const createProduct = async (
 
 export const updateProduct = async (
   params: UpdateProductParams
-): Promise<ProductResponse> => {
+): Promise<ProductServiceResponse> => {
   try {
     const { id, ...data } = params;
 
@@ -157,19 +152,19 @@ export const updateProduct = async (
 
     return {
       ok: true,
-      msg: "",
+      error: null,
       data: product,
     };
   } catch (error: any) {
     return {
       ok: false,
-      msg: error.message,
+      error: { message: error.message },
       data: null,
     };
   }
 };
 
-export const deleteProduct = async (id: string): Promise<ProductResponse> => {
+export const deleteProduct = async (id: string): Promise<ProductServiceResponse> => {
   try {
     await ProductInputValidator.deletev.validateAsync({ id });
 
@@ -190,13 +185,13 @@ export const deleteProduct = async (id: string): Promise<ProductResponse> => {
 
     return {
       ok: true,
-      msg: "",
+      error: null,
       data: product,
     };
   } catch (error: any) {
     return {
       ok: false,
-      msg: error.message,
+      error: { message: error.message },
       data: null,
     };
   }

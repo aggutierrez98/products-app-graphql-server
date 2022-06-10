@@ -4,46 +4,51 @@ import {
   uploadImage,
   updateImageCloudinary,
 } from "../../database/uploads";
-import { ContextInterface, InputError } from "../../interfaces";
-import { Product, User } from "../../models";
-
-interface UpdateResponse {
-  imagePath: string;
-}
-type UploadImageResponse = Promise<UpdateResponse | InputError>;
-type UpdateImageResponse = Promise<User | Product | InputError>;
+import { ContextInterface } from "../../interfaces";
+import {
+  UpdateImageResponse,
+  UploadImageResponse,
+} from "../../interfaces/uploads";
 
 const mutation: IResolvers<any, ContextInterface> = {
   Mutation: {
-    async uploadImage(__: void, { image }, { error }): UploadImageResponse {
-      if (error) return error;
-      const { ok, msg, data } = await uploadImage(image);
-      if (ok) {
+    async uploadImage(
+      __: void,
+      { image },
+      { error: contextError }
+    ): UploadImageResponse {
+      if (contextError) return { error: contextError };
+      const { ok, error, data } = await uploadImage(image);
+      if (ok && error) {
         return data!;
       } else {
-        return { message: msg };
+        return { error: error! };
       }
     },
-    async updateImage(__: void, params, { error }): UpdateImageResponse {
-      if (error) return error;
-      const { ok, msg, data } = await updateImage(params);
+    async updateImage(
+      __: void,
+      params,
+      { error: contextError }
+    ): UpdateImageResponse {
+      if (contextError) return { error: contextError };
+      const { ok, error, data } = await updateImage(params);
       if (ok) {
         return data!;
       } else {
-        return { message: msg };
+        return { error: error! };
       }
     },
     async updateImageCloudinary(
       __: void,
       params,
-      { error }
+      { error: contextError }
     ): UpdateImageResponse {
-      if (error) return error;
-      const { ok, msg, data } = await updateImageCloudinary(params);
+      if (contextError) return { error: contextError };
+      const { ok, error, data } = await updateImageCloudinary(params);
       if (ok) {
         return data!;
       } else {
-        return { message: msg };
+        return { error: error! };
       }
     },
   },

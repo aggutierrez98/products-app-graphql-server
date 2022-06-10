@@ -13,9 +13,9 @@ const query: IResolvers<any, ContextInterface> = {
     async getUsers(
       _: void,
       params,
-      { error }
+      { error: contextError }
     ): Promise<GetUsersResult | InputError> {
-      if (error) return error;
+      if (contextError) return { error: contextError };
 
       const [count, users] = await getUsers(params);
       return {

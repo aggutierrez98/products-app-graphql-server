@@ -6,8 +6,8 @@ const resolvers: IResolvers = {
     __resolveType: (data: any) => {
       let type: string;
 
-      if (data.categories) type = "GetCategoriesResults";
-      else type = "InputError";
+      if (data.error) type = "InputError";
+      else type = "GetCategoriesResults";
 
       return type;
     },
@@ -16,8 +16,8 @@ const resolvers: IResolvers = {
     __resolveType: (data: any) => {
       let type: string;
 
-      if (data.name) type = "Category";
-      else type = "InputError";
+      if (data.error) type = "InputError";
+      else type = "Category";
 
       return type;
     },

@@ -1,6 +1,7 @@
 import { CategorySchema, Category } from "../models";
 import { ObjectId } from "mongodb";
 import { CategoryInputValidator } from "../validators";
+import { CategoryServiceResponse } from "../interfaces/categories";
 interface getCategoriesParams {
   limit: number;
   skip: number;
@@ -16,13 +17,6 @@ interface updateCategoryParams {
   name?: string;
   user?: string;
 }
-
-type CategoryResponse = {
-  msg: string;
-  ok: boolean;
-  data: Category | null;
-};
-
 export const getCategories = async ({
   limit = 5,
   skip = 0,
@@ -44,7 +38,7 @@ export const getCategories = async ({
   return [total, categories];
 };
 
-export const getCategory = async (id: string): Promise<CategoryResponse> => {
+export const getCategory = async (id: string): Promise<CategoryServiceResponse> => {
   try {
     await CategoryInputValidator.getv.validateAsync({ id });
 
@@ -56,14 +50,14 @@ export const getCategory = async (id: string): Promise<CategoryResponse> => {
     ]);
 
     return {
-      msg: "",
+      error: null,
       data: category,
       ok: true,
     };
   } catch (error: any) {
     return {
       ok: false,
-      msg: error.message,
+      error: { message: error.message },
       data: null,
     };
   }
@@ -71,7 +65,7 @@ export const getCategory = async (id: string): Promise<CategoryResponse> => {
 
 export const createCategory = async (
   params: createCategoryParams
-): Promise<CategoryResponse> => {
+): Promise<CategoryServiceResponse> => {
   try {
     const { user, name } = params;
 
@@ -94,13 +88,13 @@ export const createCategory = async (
 
     return {
       ok: true,
-      msg: "",
+      error: null,
       data: category,
     };
   } catch (error: any) {
     return {
       ok: false,
-      msg: error.message,
+      error: { message: error.message },
       data: null,
     };
   }
@@ -108,7 +102,7 @@ export const createCategory = async (
 
 export const updateCategory = async (
   params: updateCategoryParams
-): Promise<CategoryResponse> => {
+): Promise<CategoryServiceResponse> => {
   try {
     const { id, ...data } = params;
 
@@ -131,33 +125,19 @@ export const updateCategory = async (
 
     return {
       ok: true,
-      msg: "",
+      error: null,
       data: category,
     };
   } catch (error: any) {
     return {
       ok: false,
-      msg: error.message,
+      error: { message: error.message },
       data: null,
     };
-    // if (error.details) {
-    //   return {
-    //     ok: false,
-    //     msg: error.details[0].message,
-    //     data: null,
-    //   };
-    // } else {
-    //   console.log(error);
-    //   return {
-    //     ok: false,
-    //     msg: "Ocurrio un error",
-    //     data: null,
-    //   };
-    // }
   }
 };
 
-export const deleteCategory = async (id: string): Promise<CategoryResponse> => {
+export const deleteCategory = async (id: string): Promise<CategoryServiceResponse> => {
   try {
     await CategoryInputValidator.deletev.validateAsync({ id });
 
@@ -174,13 +154,13 @@ export const deleteCategory = async (id: string): Promise<CategoryResponse> => {
 
     return {
       ok: true,
-      msg: "",
+      error: null,
       data: category,
     };
   } catch (error: any) {
     return {
       ok: false,
-      msg: error.message,
+      error: { message: error.message },
       data: null,
     };
   }

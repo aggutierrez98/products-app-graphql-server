@@ -8,8 +8,8 @@ const resolvers: IResolvers = {
     __resolveType: (data: any) => {
       let type: string;
 
-      if (data.imagePath) type = "ImageResponse";
-      else type = "InputError";
+      if (data.error) type = "InputError";
+      else type = "ImageResponse";
 
       return type;
     },
@@ -18,7 +18,7 @@ const resolvers: IResolvers = {
     __resolveType: (data: any) => {
       let type: string;
 
-      if (data.message) type = "InputError";
+      if (data.error) type = "InputError";
       else if (data.email) type = "User";
       else type = "Product";
 
