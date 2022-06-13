@@ -14,6 +14,7 @@ export enum VALID_ROLES {
 
 const USER_ROLE_QUERIES = [
   "getUsers",
+  "getUser",
   "getCategories",
   "getProducts",
   "createUser",

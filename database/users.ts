@@ -39,6 +39,26 @@ export const getUsers = async ({
   return [total, users];
 };
 
+export const getUser = async (id: string): Promise<UserServiceResponse> => {
+  try {
+    await UserInputValidator.getv.validateAsync({ id });
+
+    const user = await UserSchema.findById(id).populate("role");
+
+    return {
+      error: null,
+      data: { user },
+      ok: true,
+    };
+  } catch (error: any) {
+    return {
+      ok: false,
+      error: { message: error.message },
+      data: { user: null },
+    };
+  }
+};
+
 export const createUser = async (
   params: CreateUserParams
 ): Promise<UserServiceResponse> => {

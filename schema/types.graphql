@@ -57,12 +57,10 @@ type GetUsersResults {
     count: Int!
 }
 
-
 type GetCategoriesResults {
     categories: [Category!]!
     count: Int!
 }
-
 
 type GetProductsResults {
     products: [Product!]!

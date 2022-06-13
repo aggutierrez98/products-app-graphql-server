@@ -1,7 +1,8 @@
 import { IResolvers } from "@graphql-tools/utils";
-import { getUsers } from "../../database/users";
+import { getUser, getUsers } from "../../database/users";
 import { ContextInterface, InputError } from "../../interfaces";
 import { User } from "../../models";
+import { UserResults } from "../../interfaces/users";
 
 interface GetUsersResult {
   users: User[];
@@ -22,6 +23,17 @@ const query: IResolvers<any, ContextInterface> = {
         users,
         count,
       };
+    },
+    async getUser(_: void, { id }, { error: contextError }): UserResults {
+      if (contextError) return { error: contextError };
+
+      const { data, error, ok } = await getUser(id);
+
+      if (ok) {
+        return data.user!;
+      } else {
+        return { error: error! };
+      }
     },
   },
 };

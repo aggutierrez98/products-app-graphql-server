@@ -12,6 +12,7 @@ export type UserResults = Promise<
       user: User | null;
       token?: unknown;
     }
+  | User
   | InputError
 >;
 

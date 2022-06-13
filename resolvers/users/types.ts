@@ -12,6 +12,16 @@ const resolvers: IResolvers = {
       return type;
     },
   },
+  UserResponse: {
+    __resolveType: (data: any) => {
+      let type: string;
+
+      if (data.error) type = "InputError";
+      else type = "User";
+
+      return type;
+    },
+  },
 };
 
 export default resolvers;

@@ -1,9 +1,9 @@
 import joi from "joi";
 import { roleExists, userAlreadyExists, userExists } from "./validationHelpers";
 
-// export const getvalidation = joi.object({
-//   id: joi.string().hex().length(24).required().external(userExists),
-// });
+export const getv = joi.object({
+  id: joi.string().hex().length(24).required().external(userExists),
+});
 
 export const createv = joi.object({
   name: joi.string().min(6).max(30).alphanum().required(),
