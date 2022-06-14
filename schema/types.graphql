@@ -76,6 +76,11 @@ type AuthResults {
     token: String
 }
 
+type RenewResponse { 
+    user: User!
+    token: String
+}
+
 union AuthResponse = AuthResults | InputError
 union ProductResponse = Product | InputError
 union UserResponse = User | InputError

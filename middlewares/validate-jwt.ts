@@ -15,8 +15,6 @@ export const validateJWT = async (req: Request): Promise<Response> => {
   try {
     const token = req.headers["x-token"];
 
-    console.log("TOKEN: -", token);
-
     if (!token)
       return {
         error: "Must be authenticated",
