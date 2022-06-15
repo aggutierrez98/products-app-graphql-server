@@ -12,42 +12,42 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const uploads_1 = require("../../database/uploads");
 const mutation = {
     Mutation: {
-        uploadImage(__, { image }, { error }) {
+        uploadImage(__, { image }, { error: contextError }) {
             return __awaiter(this, void 0, void 0, function* () {
-                if (error)
-                    return error;
-                const { ok, msg, data } = yield (0, uploads_1.uploadImage)(image);
-                if (ok) {
+                if (contextError)
+                    return { error: contextError };
+                const { ok, error, data } = yield (0, uploads_1.uploadImage)(image);
+                if (ok && error) {
                     return data;
                 }
                 else {
-                    return { message: msg };
+                    return { error: error };
                 }
             });
         },
-        updateImage(__, params, { error }) {
+        updateImage(__, params, { error: contextError }) {
             return __awaiter(this, void 0, void 0, function* () {
-                if (error)
-                    return error;
-                const { ok, msg, data } = yield (0, uploads_1.updateImage)(params);
+                if (contextError)
+                    return { error: contextError };
+                const { ok, error, data } = yield (0, uploads_1.updateImage)(params);
                 if (ok) {
                     return data;
                 }
                 else {
-                    return { message: msg };
+                    return { error: error };
                 }
             });
         },
-        updateImageCloudinary(__, params, { error }) {
+        updateImageCloudinary(__, params, { error: contextError }) {
             return __awaiter(this, void 0, void 0, function* () {
-                if (error)
-                    return error;
-                const { ok, msg, data } = yield (0, uploads_1.updateImageCloudinary)(params);
+                if (contextError)
+                    return { error: contextError };
+                const { ok, error, data } = yield (0, uploads_1.updateImageCloudinary)(params);
                 if (ok) {
                     return data;
                 }
                 else {
-                    return { message: msg };
+                    return { error: error };
                 }
             });
         },

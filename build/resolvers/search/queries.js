@@ -12,16 +12,16 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const search_1 = require("../../database/search");
 const resolvers = {
     Query: {
-        search(_, params, { error }) {
+        search(_, params, { error: contextError }) {
             return __awaiter(this, void 0, void 0, function* () {
-                if (error)
-                    return { message: error.message };
-                const { results, msg, ok } = yield (0, search_1.search)(params);
+                if (contextError)
+                    return { error: contextError };
+                const { results, error, ok } = yield (0, search_1.search)(params);
                 if (ok) {
                     return { results };
                 }
                 else {
-                    return { message: msg };
+                    return { error: error };
                 }
             });
         },

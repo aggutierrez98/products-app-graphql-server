@@ -12,24 +12,24 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const products_1 = require("../../database/products");
 const query = {
     Query: {
-        getProducts(_, params, { error }) {
+        getProducts(_, params, { error: contextError }) {
             return __awaiter(this, void 0, void 0, function* () {
-                if (error)
-                    return { message: error.message };
+                if (contextError)
+                    return { error: contextError };
                 const [count, products] = yield (0, products_1.getProducts)(params);
                 return { products, count };
             });
         },
-        getProduct(_, { id }, { error }) {
+        getProduct(_, { id }, { error: contextError }) {
             return __awaiter(this, void 0, void 0, function* () {
-                if (error)
-                    return { message: error.message };
-                const { data, msg, ok } = yield (0, products_1.getProduct)(id);
+                if (contextError)
+                    return { error: contextError };
+                const { data, error, ok } = yield (0, products_1.getProduct)(id);
                 if (ok) {
                     return data;
                 }
                 else {
-                    return { message: msg };
+                    return { error: error };
                 }
             });
         },

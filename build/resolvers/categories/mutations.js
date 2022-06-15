@@ -10,49 +10,44 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const categories_1 = require("../../database/categories");
-const models_1 = require("../../models");
 const mutation = {
     Mutation: {
-        createCategory(_, { category }, { error }) {
+        createCategory(_, { category }, { error: contextError }) {
             return __awaiter(this, void 0, void 0, function* () {
-                if (error)
-                    return error;
-                const { ok, msg, data } = yield (0, categories_1.createCategory)(category);
+                if (contextError)
+                    return { error: contextError };
+                const { ok, error, data } = yield (0, categories_1.createCategory)(category);
                 if (ok) {
                     return data;
                 }
                 else {
-                    return { message: msg };
+                    return { error: error };
                 }
             });
         },
-        updateCategory(__, { category }, { error, user }) {
-            var _a;
+        updateCategory(__, { category }, { error: contextError }) {
             return __awaiter(this, void 0, void 0, function* () {
-                if (error)
-                    return error;
-                const isAdminRole = ((_a = (yield models_1.RoleSchema.findById(user === null || user === void 0 ? void 0 : user.role))) === null || _a === void 0 ? void 0 : _a.name) === "ADMIN_ROLE";
-                if (!isAdminRole)
-                    return { message: "Debe ser administrador" };
-                const { ok, msg, data } = yield (0, categories_1.updateCategory)(category);
+                if (contextError)
+                    return { error: contextError };
+                const { ok, error, data } = yield (0, categories_1.updateCategory)(category);
                 if (ok) {
                     return data;
                 }
                 else {
-                    return { message: msg };
+                    return { error: error };
                 }
             });
         },
-        deleteCategory(__, { id }, { error }) {
+        deleteCategory(__, { id }, { error: contextError }) {
             return __awaiter(this, void 0, void 0, function* () {
-                if (error)
-                    return error;
-                const { ok, msg, data } = yield (0, categories_1.deleteCategory)(id);
+                if (contextError)
+                    return { error: contextError };
+                const { ok, error, data } = yield (0, categories_1.deleteCategory)(id);
                 if (ok) {
                     return data;
                 }
                 else {
-                    return { message: msg };
+                    return { error: error };
                 }
             });
         },

@@ -59,7 +59,7 @@ const getProduct = (id) => __awaiter(void 0, void 0, void 0, function* () {
             },
         ]);
         return {
-            msg: "",
+            error: null,
             data: product,
             ok: true,
         };
@@ -67,7 +67,7 @@ const getProduct = (id) => __awaiter(void 0, void 0, void 0, function* () {
     catch (error) {
         return {
             ok: false,
-            msg: error.message,
+            error: { message: error.message },
             data: null,
         };
     }
@@ -91,14 +91,14 @@ const createProduct = (params) => __awaiter(void 0, void 0, void 0, function* ()
         ]);
         return {
             ok: true,
-            msg: "",
+            error: null,
             data: product,
         };
     }
     catch (error) {
         return {
             ok: false,
-            msg: error.message,
+            error: { message: error.message },
             data: null,
         };
     }
@@ -128,14 +128,14 @@ const updateProduct = (params) => __awaiter(void 0, void 0, void 0, function* ()
         ]);
         return {
             ok: true,
-            msg: "",
+            error: null,
             data: product,
         };
     }
     catch (error) {
         return {
             ok: false,
-            msg: error.message,
+            error: { message: error.message },
             data: null,
         };
     }
@@ -156,14 +156,14 @@ const deleteProduct = (id) => __awaiter(void 0, void 0, void 0, function* () {
         ]);
         return {
             ok: true,
-            msg: "",
+            error: null,
             data: product,
         };
     }
     catch (error) {
         return {
             ok: false,
-            msg: error.message,
+            error: { message: error.message },
             data: null,
         };
     }

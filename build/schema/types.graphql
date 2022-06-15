@@ -1,5 +1,8 @@
-type InputError {
+type Error {
     message: String!
+}
+type InputError {
+    error: Error!
 }
 
 type Role {
@@ -54,12 +57,10 @@ type GetUsersResults {
     count: Int!
 }
 
-
 type GetCategoriesResults {
     categories: [Category!]!
     count: Int!
 }
-
 
 type GetProductsResults {
     products: [Product!]!
@@ -70,6 +71,17 @@ type SearchResults {
     results: [CollectionsTypes!]!
 }
 
+type AuthResults { 
+    user: User!
+    token: String
+}
+
+type RenewResponse { 
+    user: User!
+    token: String
+}
+
+union AuthResponse = AuthResults | InputError
 union ProductResponse = Product | InputError
 union UserResponse = User | InputError
 union CategoryResponse = Category | InputError

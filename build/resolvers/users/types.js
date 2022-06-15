@@ -4,10 +4,20 @@ const resolvers = {
     GetUsersResponse: {
         __resolveType: (data) => {
             let type;
-            if (data.users)
-                type = "GetUsersResults";
-            else
+            if (data.error)
                 type = "InputError";
+            else
+                type = "GetUsersResults";
+            return type;
+        },
+    },
+    UserResponse: {
+        __resolveType: (data) => {
+            let type;
+            if (data.error)
+                type = "InputError";
+            else
+                type = "User";
             return type;
         },
     },

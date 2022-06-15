@@ -21,18 +21,16 @@ const login = (params) => __awaiter(void 0, void 0, void 0, function* () {
         const user = yield validators_1.AuthInputValidator.credentials(email, password);
         const token = yield (0, helpers_1.generateJWT)(user.id);
         return {
-            msg: "",
+            error: null,
             ok: true,
-            data: user,
-            token,
+            data: { user, token },
         };
     }
     catch (error) {
         return {
             ok: false,
-            msg: error.message,
-            data: null,
-            token: null,
+            error: { message: error.message },
+            data: { user: null, token: null },
         };
     }
 });
@@ -54,26 +52,24 @@ const googleSignIn = (id_token) => __awaiter(void 0, void 0, void 0, function* (
         }
         if (!user.active) {
             return {
-                msg: "Server error: User blocked",
+                error: { message: "Server error: User blocked" },
                 ok: false,
-                data: null,
-                token: null,
+                data: { user: null, token: null },
             };
         }
         const token = yield (0, helpers_1.generateJWT)(user.id);
         return {
-            msg: "",
+            error: null,
             ok: true,
-            data: user,
+            data: { user, token },
             token,
         };
     }
     catch (e) {
         return {
-            msg: "Google token not valid",
+            error: { message: "Google token not valid" },
             ok: false,
-            data: null,
-            token: null,
+            data: { user: null, token: null },
         };
     }
 });

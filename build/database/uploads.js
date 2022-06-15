@@ -28,12 +28,12 @@ const uploadImage = ({ image, }) => __awaiter(void 0, void 0, void 0, function* 
                 imagePath: filePath,
             },
             ok: true,
-            msg: "",
+            error: null,
         };
     }
     catch (error) {
         console.log(error);
-        return { msg: error.message, ok: false, data: null };
+        return { error: { message: error.message }, ok: false, data: null };
     }
 });
 exports.uploadImage = uploadImage;
@@ -46,7 +46,7 @@ const updateImage = ({ id, collection, image, }) => __awaiter(void 0, void 0, vo
                 document = yield models_1.UserSchema.findById(id);
                 if (!document)
                     return {
-                        msg: `User with id ${id} not exists`,
+                        error: { message: `User with id ${id} not exists` },
                         ok: false,
                         data: null,
                     };
@@ -55,14 +55,16 @@ const updateImage = ({ id, collection, image, }) => __awaiter(void 0, void 0, vo
                 document = yield models_1.ProductSchema.findById(id);
                 if (!document)
                     return {
-                        msg: `Product with id ${id} not exists`,
+                        error: { message: `Product with id ${id} not exists` },
                         ok: false,
                         data: null,
                     };
                 break;
             default:
                 return {
-                    msg: `Collection ${collection} image upload not implemented yet`,
+                    error: {
+                        message: `Collection ${collection} image upload not implemented yet`,
+                    },
                     ok: false,
                     data: null,
                 };
@@ -79,11 +81,11 @@ const updateImage = ({ id, collection, image, }) => __awaiter(void 0, void 0, vo
         return {
             data: document,
             ok: true,
-            msg: "",
+            error: null,
         };
     }
     catch (error) {
-        return { msg: error.message, ok: false, data: null };
+        return { error: { message: error.message }, ok: false, data: null };
     }
 });
 exports.updateImage = updateImage;
@@ -95,7 +97,7 @@ const updateImageCloudinary = ({ id, collection, image, }) => __awaiter(void 0, 
                 document = yield models_1.UserSchema.findById(id).populate("role");
                 if (!document)
                     return {
-                        msg: `User with id ${id} not exists`,
+                        error: { message: `User with id ${id} not exists` },
                         ok: false,
                         data: null,
                     };
@@ -113,14 +115,16 @@ const updateImageCloudinary = ({ id, collection, image, }) => __awaiter(void 0, 
                 ]);
                 if (!document)
                     return {
-                        msg: `Product with id ${id} not exists`,
+                        error: { message: `Product with id ${id} not exists` },
                         ok: false,
                         data: null,
                     };
                 break;
             default:
                 return {
-                    msg: `Collection ${collection} image upload not implemented yet`,
+                    error: {
+                        message: `Collection ${collection} image upload not implemented yet`,
+                    },
                     ok: false,
                     data: null,
                 };
@@ -144,11 +148,11 @@ const updateImageCloudinary = ({ id, collection, image, }) => __awaiter(void 0, 
         return {
             data: document,
             ok: true,
-            msg: "",
+            error: null,
         };
     }
     catch (error) {
-        return { msg: error.message, ok: false, data: null };
+        return { error: { message: error.message }, ok: false, data: null };
     }
 });
 exports.updateImageCloudinary = updateImageCloudinary;

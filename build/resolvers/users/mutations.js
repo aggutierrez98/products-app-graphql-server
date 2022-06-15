@@ -12,42 +12,42 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const users_1 = require("../../database/users");
 const mutation = {
     Mutation: {
-        createUser(__, { user }, { error }) {
+        createUser(__, { user }, { error: contextError }) {
             return __awaiter(this, void 0, void 0, function* () {
-                if (error)
-                    return error;
-                const { ok, msg, data } = yield (0, users_1.createUser)(user);
+                if (contextError)
+                    return { error: contextError };
+                const { ok, error, data } = yield (0, users_1.createUser)(user);
                 if (ok) {
                     return data;
                 }
                 else {
-                    return { message: msg };
+                    return { error: error };
                 }
             });
         },
-        updateUser(__, { user }, { error }) {
+        updateUser(__, { user }, { error: contextError }) {
             return __awaiter(this, void 0, void 0, function* () {
-                if (error)
-                    return error;
-                const { ok, msg, data } = yield (0, users_1.updateUser)(user);
+                if (contextError)
+                    return { error: contextError };
+                const { ok, error, data } = yield (0, users_1.updateUser)(user);
                 if (ok) {
                     return data;
                 }
                 else {
-                    return { message: msg };
+                    return { error: error };
                 }
             });
         },
-        deleteUser(__, { id }, { error }) {
+        deleteUser(__, { id }, { error: contextError }) {
             return __awaiter(this, void 0, void 0, function* () {
-                if (error)
-                    return error;
-                const { ok, msg, data } = yield (0, users_1.deleteUser)(id);
+                if (contextError)
+                    return { error: contextError };
+                const { ok, error, data } = yield (0, users_1.deleteUser)(id);
                 if (ok) {
                     return data;
                 }
                 else {
-                    return { message: msg };
+                    return { error: error };
                 }
             });
         },

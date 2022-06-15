@@ -9,17 +9,17 @@ const resolvers = {
     UploadImageResponse: {
         __resolveType: (data) => {
             let type;
-            if (data.imagePath)
-                type = "ImageResponse";
-            else
+            if (data.error)
                 type = "InputError";
+            else
+                type = "ImageResponse";
             return type;
         },
     },
     UploadResponse: {
         __resolveType: (data) => {
             let type;
-            if (data.message)
+            if (data.error)
                 type = "InputError";
             else if (data.email)
                 type = "User";

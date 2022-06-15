@@ -12,30 +12,29 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const auth_1 = require("../../database/auth");
 const mutation = {
     Mutation: {
-        login(__, { email, password }, { error }) {
+        login(__, { email, password }, { error: contextError }) {
             return __awaiter(this, void 0, void 0, function* () {
-                if (error)
-                    return error;
-                const { ok, msg, data, token } = yield (0, auth_1.login)({ email, password });
-                console.log({ token });
+                if (contextError)
+                    return { error: contextError };
+                const { ok, error, data } = yield (0, auth_1.login)({ email, password });
                 if (ok) {
                     return data;
                 }
                 else {
-                    return { message: msg };
+                    return { error: error };
                 }
             });
         },
-        googleSignIn(__, { id_token }, { error }) {
+        googleSignIn(__, { id_token }, { error: contextError }) {
             return __awaiter(this, void 0, void 0, function* () {
-                if (error)
-                    return error;
-                const { ok, msg, data } = yield (0, auth_1.googleSignIn)(id_token);
+                if (contextError)
+                    return { error: contextError };
+                const { ok, error, data } = yield (0, auth_1.googleSignIn)(id_token);
                 if (ok) {
                     return data;
                 }
                 else {
-                    return { message: msg };
+                    return { error: error };
                 }
             });
         },

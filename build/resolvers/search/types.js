@@ -4,10 +4,10 @@ const resolvers = {
     SearchResponse: {
         __resolveType: (data) => {
             let type;
-            if (data.results)
-                type = "SearchResults";
-            else
+            if (data.error)
                 type = "InputError";
+            else
+                type = "SearchResults";
             return type;
         },
     },

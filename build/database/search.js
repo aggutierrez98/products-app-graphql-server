@@ -101,14 +101,14 @@ const search = (params) => __awaiter(void 0, void 0, void 0, function* () {
         return {
             ok: true,
             results,
-            msg: "",
+            error: null,
         };
     }
     catch (error) {
         return {
             ok: false,
             results,
-            msg: error.message,
+            error: { message: error.message },
         };
     }
 });

@@ -15,6 +15,7 @@ var VALID_ROLES;
 })(VALID_ROLES = exports.VALID_ROLES || (exports.VALID_ROLES = {}));
 const USER_ROLE_QUERIES = [
     "getUsers",
+    "getUser",
     "getCategories",
     "getProducts",
     "createUser",

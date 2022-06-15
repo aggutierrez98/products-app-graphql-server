@@ -12,42 +12,42 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const products_1 = require("../../database/products");
 const mutation = {
     Mutation: {
-        createProduct(__, { product }, { error }) {
+        createProduct(__, { product }, { error: contextError }) {
             return __awaiter(this, void 0, void 0, function* () {
-                if (error)
-                    return error;
-                const { ok, msg, data } = yield (0, products_1.createProduct)(product);
+                if (contextError)
+                    return { error: contextError };
+                const { ok, error, data } = yield (0, products_1.createProduct)(product);
                 if (ok) {
                     return data;
                 }
                 else {
-                    return { message: msg };
+                    return { error: error };
                 }
             });
         },
-        updateProduct(__, { product }, { error }) {
+        updateProduct(__, { product }, { error: contextError }) {
             return __awaiter(this, void 0, void 0, function* () {
-                if (error)
-                    return error;
-                const { ok, msg, data } = yield (0, products_1.updateProduct)(product);
+                if (contextError)
+                    return { error: contextError };
+                const { ok, error, data } = yield (0, products_1.updateProduct)(product);
                 if (ok) {
                     return data;
                 }
                 else {
-                    return { message: msg };
+                    return { error: error };
                 }
             });
         },
-        deleteProduct(__, { id }, { error }) {
+        deleteProduct(__, { id }, { error: contextError }) {
             return __awaiter(this, void 0, void 0, function* () {
-                if (error)
-                    return error;
-                const { ok, msg, data } = yield (0, products_1.deleteProduct)(id);
+                if (contextError)
+                    return { error: contextError };
+                const { ok, error, data } = yield (0, products_1.deleteProduct)(id);
                 if (ok) {
                     return data;
                 }
                 else {
-                    return { message: msg };
+                    return { error: error };
                 }
             });
         },

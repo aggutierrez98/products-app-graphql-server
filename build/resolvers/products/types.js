@@ -4,20 +4,20 @@ const resolvers = {
     GetProductsResponse: {
         __resolveType: (data) => {
             let type;
-            if (data.products)
-                type = "GetProductsResults";
-            else
+            if (data.error)
                 type = "InputError";
+            else
+                type = "GetProductsResults";
             return type;
         },
     },
     ProductResponse: {
         __resolveType: (data) => {
             let type;
-            if (data.name)
-                type = "Product";
-            else
+            if (data.error)
                 type = "InputError";
+            else
+                type = "Product";
             return type;
         },
     },

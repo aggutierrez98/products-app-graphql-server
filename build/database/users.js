@@ -23,7 +23,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteUser = exports.updateUser = exports.createUser = exports.getUsers = void 0;
+exports.deleteUser = exports.updateUser = exports.createUser = exports.getUser = exports.getUsers = void 0;
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const models_1 = require("../models");
 const helpers_1 = require("../helpers");
@@ -37,6 +37,25 @@ const getUsers = ({ limit = 5, skip = 0, }) => __awaiter(void 0, void 0, void 0,
     return [total, users];
 });
 exports.getUsers = getUsers;
+const getUser = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        yield validators_1.UserInputValidator.getv.validateAsync({ id });
+        const user = yield models_1.UserSchema.findById(id).populate("role");
+        return {
+            error: null,
+            data: { user },
+            ok: true,
+        };
+    }
+    catch (error) {
+        return {
+            ok: false,
+            error: { message: error.message },
+            data: { user: null },
+        };
+    }
+});
+exports.getUser = getUser;
 const createUser = (params) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { name, email, password, role } = params;
@@ -50,17 +69,15 @@ const createUser = (params) => __awaiter(void 0, void 0, void 0, function* () {
         const token = yield (0, helpers_1.generateJWT)(user.id);
         return {
             ok: true,
-            msg: "",
-            data: user,
-            token,
+            error: null,
+            data: { user, token },
         };
     }
     catch (error) {
         return {
             ok: false,
-            msg: error.message,
-            data: null,
-            token: null,
+            error: { message: error.message },
+            data: { user: null, token: null },
         };
     }
 });
@@ -79,17 +96,15 @@ const updateUser = (params) => __awaiter(void 0, void 0, void 0, function* () {
         }).populate("role");
         return {
             ok: true,
-            msg: "",
-            data: user,
-            token: null,
+            error: null,
+            data: { user, token: null },
         };
     }
     catch (error) {
         return {
             ok: false,
-            msg: error.message,
-            data: null,
-            token: null,
+            error: { message: error.message },
+            data: { user: null, token: null },
         };
     }
 });
@@ -100,17 +115,15 @@ const deleteUser = (id) => __awaiter(void 0, void 0, void 0, function* () {
         const user = yield models_1.UserSchema.findByIdAndUpdate(id, { active: false }, { new: true }).populate("role");
         return {
             ok: true,
-            msg: "",
-            data: user,
-            token: null,
+            error: null,
+            data: { user, token: null },
         };
     }
     catch (error) {
         return {
             ok: false,
-            msg: error.message,
-            data: null,
-            token: null,
+            error: { message: error.message },
+            data: { user: null, token: null },
         };
     }
 });
