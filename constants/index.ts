@@ -17,6 +17,7 @@ const USER_ROLE_QUERIES = [
   "getUser",
   "getCategories",
   "getProducts",
+  "getProduct",
   "createUser",
   "updateUser",
 ];
