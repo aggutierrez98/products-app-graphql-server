@@ -59,8 +59,14 @@ class ServerModel {
       context: contextMiddleware,
     });
 
+    // CORS configuration
+    const corsOptions = {
+      origin: "http://localhost:8081",
+      credentials: true,
+    };
+
     this.server.start().then(() => {
-      this.server.applyMiddleware({ app: this.app });
+      this.server.applyMiddleware({ app: this.app, cors: corsOptions });
     });
   }
 
