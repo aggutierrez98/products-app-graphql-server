@@ -61,7 +61,9 @@ class ServerModel {
 
     // CORS configuration
     const corsOptions = {
-      origin: "http://localhost:8081",
+      // origin: "http://localhost:8081",
+      // origin: "http://192.168.0.100:8081",
+      origin: "http://181.89.152.171",
       credentials: true,
     };
 
