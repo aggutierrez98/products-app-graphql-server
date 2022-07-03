@@ -55,20 +55,23 @@ class ServerModel {
       // schema: schemaWithMiddleware,
       schema,
       introspection: true,
-      csrfPrevention: true,
+      // csrfPrevention: true,
       context: contextMiddleware,
     });
 
-    // CORS configuration
-    const corsOptions = {
-      // origin: "http://localhost:8081",
-      // origin: "http://192.168.0.100:8081",
-      origin: "http://181.89.152.171",
-      credentials: true,
-    };
+    // // CORS configuration
+    // const corsOptions = {
+    //   // origin: "http://localhost:8081",
+    //   // origin: "http://192.168.0.100:8081",
+    //   origin: "http://181.89.152.171",
+    //   credentials: true,
+    // };
 
     this.server.start().then(() => {
-      this.server.applyMiddleware({ app: this.app, cors: corsOptions });
+      this.server.applyMiddleware({
+        app: this.app,
+        // cors: corsOptions
+      });
     });
   }
 

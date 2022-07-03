@@ -55,7 +55,7 @@ export const updateImage = async ({
 
     switch (collection) {
       case "users":
-        document = await UserSchema.findById(id);
+        document = await UserSchema.findById(id).populate("role");
         if (!document)
           return {
             error: { message: `User with id ${id} not exists` },
@@ -65,7 +65,16 @@ export const updateImage = async ({
         break;
 
       case "products":
-        document = await ProductSchema.findById(id);
+        document = await ProductSchema.findById(id).populate([
+          {
+            path: "user",
+            populate: [{ path: "role" }],
+          },
+          {
+            path: "category",
+            populate: [{ path: "user", populate: [{ path: "role" }] }],
+          },
+        ]);
         if (!document)
           return {
             error: { message: `Product with id ${id} not exists` },
