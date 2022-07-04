@@ -1,3 +1,4 @@
 build
 node_modules
-uploads
+uploads/products/**.jpg
+uploads/users/**.jpg
