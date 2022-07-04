@@ -126,6 +126,7 @@ export const updateImageCloudinary = async ({
   image,
 }: UpdateImageParams): Promise<UpdateServiceResponse> => {
   let document: (Document<any, BeAnObject, any> & User & Product) | null;
+  let newResult: (Document<any, BeAnObject, any> & User & Product) | null;
 
   try {
     switch (collection) {
@@ -176,21 +177,30 @@ export const updateImageCloudinary = async ({
     }
     const files = await image;
 
-    const uploader = cloudinary.uploader.upload_stream(
-      { folder: `productosApp/${collection}` },
-      async (err, result) => {
-        if (err) throw err;
-        if (result) {
-          document!.image = result.secure_url;
-          await document!.save();
-        }
-      }
-    );
+    const uploadPromise = () => {
+      return new Promise((resolve) => {
+        const uploader = cloudinary.uploader.upload_stream(
+          { folder: `productosApp/${collection}` },
+          async (err, result) => {
+            if (err) {
+              throw err;
+            }
+            if (result) {
+              document!.image = result.secure_url;
+              await document!.save();
+              resolve(document);
+            }
+          }
+        );
 
-    await files.createReadStream().pipe(uploader);
+        files.createReadStream().pipe(uploader);
+      });
+    };
+
+    await uploadPromise();
 
     return {
-      data: document,
+      data: document!,
       ok: true,
       error: null,
     };
