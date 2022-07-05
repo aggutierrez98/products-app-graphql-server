@@ -1,12 +1,11 @@
 import { RoleSchema, User } from "../models";
 import { QUERIES_BY_ROLE, VALID_ROLES } from "../constants/index";
+import { Role } from "../models/role";
 
 export const validateRole = async (
-  user: User,
+  userRole: Role,
   query: string
 ): Promise<[boolean, string | null]> => {
-  const userRole = await RoleSchema.findById(user.role);
-
   if (!userRole) return [false, "Role not exists"];
 
   const userRoleName = userRole.name as VALID_ROLES;

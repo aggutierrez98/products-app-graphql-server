@@ -3,6 +3,7 @@ import { NOT_AUTH_QUERIES } from "../constants";
 import { ContextInterface } from "../interfaces";
 import { validateJWT } from "./validate-jwt";
 import { validateRole } from "./validate-roles";
+import { Role } from "../models/role";
 
 export interface Context {
   req: Request;
@@ -23,7 +24,10 @@ export const contextMiddleware = async ({
       }
 
       if (data) {
-        const [isValidRole, message] = await validateRole(data, query);
+        const [isValidRole, message] = await validateRole(
+          data.role as Role,
+          query
+        );
 
         if (isValidRole) {
           return {

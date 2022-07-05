@@ -24,7 +24,7 @@ export const validateJWT = async (req: Request): Promise<Response> => {
     //@ts-ignore
     const uid = jwt.verify(token, process.env.SECRETORPRIVATEKEY!).uid;
 
-    const user = await UserSchema.findById(uid);
+    const user = await UserSchema.findById(uid).populate("role");
 
     if (!user)
       return {
