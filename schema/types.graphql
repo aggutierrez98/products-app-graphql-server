@@ -1,94 +1,101 @@
 type Error {
-    message: String!
+  message: String!
 }
 type InputError {
-    error: Error!
+  error: Error!
 }
 
 type Role {
-    id: ID!
-    name: String!
+  id: ID!
+  name: String!
 }
 
 type Product {
-    id: ID!
-    name: String!
-    description: String
-    image: String
-    price: Int!
-    available: Boolean!
-    active: Boolean!
-    user: User!
-    category: Category!
+  id: ID!
+  name: String!
+  description: String
+  image: String
+  price: Int!
+  available: Boolean!
+  active: Boolean!
+  user: User!
+  category: Category!
 }
 
 type User {
-    id: ID!
-    name: String!
-    email: String!
-    # password: String!
-    image: String
-    role: Role!
-    active: Boolean!
-    google: Boolean!
+  id: ID!
+  name: String!
+  email: String!
+  # password: String!
+  image: String
+  role: Role!
+  active: Boolean!
+  google: Boolean!
 }
 
 type Category {
-    id: ID!
-    name: String!
-    user: User!
-    active: Boolean!
+  id: ID!
+  name: String!
+  user: User!
+  active: Boolean!
 }
 
 enum Collections {
-    users
-    categories
-    products
+  users
+  categories
+  products
 }
 
 scalar Upload
 
 type ImageResponse {
-    imagePath: String!
+  imagePath: String!
 }
 
 type GetUsersResults {
-    users: [User!]!
-    count: Int!
+  users: [User!]!
+  count: Int!
 }
 
 type GetCategoriesResults {
-    categories: [Category!]!
-    count: Int!
+  categories: [Category!]!
+  count: Int!
 }
 
 type GetProductsResults {
-    products: [Product!]!
-    count: Int!
+  products: [Product!]!
+  count: Int!
+}
+
+type GetRolesResults {
+  roles: [Role!]!
+  count: Int!
 }
 
 type SearchResults {
-    results: [CollectionsTypes!]!
+  results: [CollectionsTypes!]!
 }
 
-type AuthResults { 
-    user: User!
-    token: String
+type AuthResults {
+  user: User!
+  token: String
 }
 
-type RenewResponse { 
-    user: User!
-    token: String
+type RenewResponse {
+  user: User!
+  token: String
 }
 
 union AuthResponse = AuthResults | InputError
 union ProductResponse = Product | InputError
 union UserResponse = User | InputError
 union CategoryResponse = Category | InputError
+# union RoleResponse = Role | InputError
 union GetUsersResponse = GetUsersResults | InputError
 union GetCategoriesResponse = GetCategoriesResults | InputError
 union GetProductsResponse = GetProductsResults | InputError
+union GetRolesResponse = GetRolesResults | InputError
 union SearchResponse = SearchResults | InputError
 union UploadImageResponse = ImageResponse | InputError
-union UploadResponse =  Product | User | InputError
+union UploadResponse = Product | User | InputError
 union CollectionsTypes = Product | User | Category

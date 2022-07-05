@@ -37,6 +37,7 @@ const ADMIN_ROLE_QUERIES = [
   ...VENTAS_ROLE_QUERIES,
   "deleteUser",
   "uploadImage",
+  "getRoles",
 ];
 
 type RoleQueriesMap = {
