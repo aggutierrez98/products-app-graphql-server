@@ -1,10 +1,10 @@
 type Query {
-    getCategories(limit: Int=5, skip: Int=0): GetCategoriesResponse!
-    getCategory(id: ID!): CategoryResponse!
-    getUsers(limit: Int=5, skip: Int=0): GetUsersResponse!
-    # getUser(id: ID!): UserResponse!
-    getUser(id: ID!): User!
-    getProducts(limit: Int=5, skip: Int=0): GetProductsResponse!
-    getProduct(id: ID!): ProductResponse!
-    search(term: String! , collection: Collections!): SearchResponse!
+  getCategories(limit: Int = 5, skip: Int = 0): GetCategoriesResponse!
+  getCategory(id: ID!): CategoryResponse!
+  getUsers(limit: Int = 5, skip: Int = 0): GetUsersResponse!
+  getUser(id: ID!): User!
+  currentUser: User
+  getProducts(limit: Int = 5, skip: Int = 0): GetProductsResponse!
+  getProduct(id: ID!): ProductResponse!
+  search(term: String!, collection: Collections!): SearchResponse!
 }

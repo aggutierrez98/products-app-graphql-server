@@ -1,21 +1,20 @@
-// import { IResolvers } from "@graphql-tools/utils";
+import { IResolvers } from "@graphql-tools/utils";
 // import { renewToken } from "../../database/auth";
-// import { getCategories, getCategory } from "../../database/categories";
-// import { ContextInterface, CategoryResults } from "../../interfaces";
+import { ContextInterface } from "../../interfaces";
 
-// const query: IResolvers<any, ContextInterface> = {
-//   Query: {
-//     async renewToken(
-//       _: void,
-//       { error: contextError }
-//     ): CategoryResults {
-//       if (contextError) return { error: contextError };
+const query: IResolvers<any, ContextInterface> = {
+  Query: {
+    async currentUser(root, { error: contextError }, context) {
+      if (contextError) return { error: contextError };
 
-//       const [count, categories] = await renewToken(token);
-//       return { categories, count };
-//     },
-   
-//   },
-// };
+      return context.user;
+    },
+    // async renewToken(_: void, { error: contextError }): UserResults {
+    //   if (contextError) return { error: contextError };
 
-// export default query;
+    //   return context.user;
+    // },
+  },
+};
+
+export default query;

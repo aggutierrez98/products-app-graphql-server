@@ -200,7 +200,7 @@ export const updateImageCloudinary = async ({
     await uploadPromise();
 
     return {
-      data: document!,
+      data: document,
       ok: true,
       error: null,
     };
