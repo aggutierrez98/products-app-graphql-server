@@ -1,3 +1,3 @@
-# WebServer + RestServer
+# GraphQL Server for e-commerce managment
 
-Recuerden que deben de ejecutar ```npm install``` para reconstruir los módulos de Node.
+Made with GraphQL, NodeJS, Apollo-Express and MongoDB
