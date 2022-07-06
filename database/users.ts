@@ -99,13 +99,12 @@ export const updateUser = async (
   params: UpdateUserParams
 ): Promise<UserServiceResponse> => {
   try {
-    const { id, password, role, google, email, ...rest } = params;
+    const { id, password, google, email, ...rest } = params;
 
     await UserInputValidator.updatev.validateAsync(params);
 
-    const updateData = {
+    const updateData: any = {
       ...rest,
-      password,
     };
 
     if (password) {

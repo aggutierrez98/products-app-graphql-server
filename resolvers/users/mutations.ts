@@ -21,7 +21,7 @@ const mutation: IResolvers<any, ContextInterface> = {
       const { ok, error, data } = await updateUser(user);
 
       if (ok) {
-        return data!;
+        return data.user!;
       } else {
         return { error: error! };
       }
