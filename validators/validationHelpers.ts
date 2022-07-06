@@ -78,6 +78,8 @@ export const productAlreadyExists = async (name: string) => {
 };
 
 export const roleExists = async (id: ObjectId) => {
+  if (id === undefined) return undefined;
+
   const role = await RoleSchema.findById(id);
 
   if (!role) {
