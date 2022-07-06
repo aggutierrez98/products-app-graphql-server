@@ -103,14 +103,14 @@ export const updateUser = async (
 
     await UserInputValidator.updatev.validateAsync(params);
 
-    const updateData: any = {
+    const updateData = {
       ...rest,
     };
 
     if (password) {
       // Encriptar la contraseña
       const salt = bcryptjs.genSaltSync();
-      updateData.password = bcryptjs.hashSync(password, salt);
+      (updateData as any).password = bcryptjs.hashSync(password, salt);
     }
 
     const user = await UserSchema.findByIdAndUpdate(id, updateData, {
