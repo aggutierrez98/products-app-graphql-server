@@ -99,15 +99,13 @@ export const updateUser = async (
   params: UpdateUserParams
 ): Promise<UserServiceResponse> => {
   try {
-    const { id, password, role, google, email, ...rest } = params;
+    const { id, password, google, email, ...rest } = params;
 
     await UserInputValidator.updatev.validateAsync(params);
 
     const updateData: any = {
       ...rest,
     };
-
-    console.log({ updateData });
 
     if (password) {
       // Encriptar la contraseña
