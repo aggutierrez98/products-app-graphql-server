@@ -10,7 +10,7 @@ const mutation: IResolvers<any, ContextInterface> = {
       const { ok, error, data } = await createUser(user);
 
       if (ok) {
-        return data!;
+        return data.user!;
       } else {
         return { error: error! };
       }
@@ -32,7 +32,7 @@ const mutation: IResolvers<any, ContextInterface> = {
       const { ok, error, data } = await deleteUser(id);
 
       if (ok) {
-        return data!;
+        return data.user!;
       } else {
         return { error: error! };
       }
