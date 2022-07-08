@@ -8,15 +8,15 @@ import {
 } from "../models";
 
 export const categoryExists = async (id: ObjectId) => {
-  if (id) {
-    const category = await CategorySchema.findById(id);
+  if (!id) return undefined;
 
-    if (!category) {
-      throw new Error(`Category with id ${id} dont exists`);
-    } else {
-      return id;
-    }
-  } else return undefined;
+  const category = await CategorySchema.findById(id);
+
+  if (!category) {
+    throw new Error(`Category with id ${id} dont exists`);
+  } else {
+    return id;
+  }
 };
 
 export const categoryAlreadyExists = async (name: string) => {
