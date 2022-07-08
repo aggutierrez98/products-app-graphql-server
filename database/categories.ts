@@ -38,7 +38,9 @@ export const getCategories = async ({
   return [total, categories];
 };
 
-export const getCategory = async (id: string): Promise<CategoryServiceResponse> => {
+export const getCategory = async (
+  id: string
+): Promise<CategoryServiceResponse> => {
   try {
     await CategoryInputValidator.getv.validateAsync({ id });
 
@@ -137,7 +139,9 @@ export const updateCategory = async (
   }
 };
 
-export const deleteCategory = async (id: string): Promise<CategoryServiceResponse> => {
+export const deleteCategory = async (
+  id: string
+): Promise<CategoryServiceResponse> => {
   try {
     await CategoryInputValidator.deletev.validateAsync({ id });
 

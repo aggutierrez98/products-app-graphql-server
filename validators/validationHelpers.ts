@@ -32,15 +32,15 @@ export const categoryAlreadyExists = async (name: string) => {
 };
 
 export const userExists = async (id: ObjectId) => {
-  if (id) {
-    const user = await UserSchema.findById(id);
+  if (id === undefined) return undefined;
 
-    if (!user) {
-      throw new Error(`User with id ${id} dont exists`);
-    } else {
-      return id;
-    }
-  } else return undefined;
+  const user = await UserSchema.findById(id);
+
+  if (!user) {
+    throw new Error(`User with id ${id} dont exists`);
+  } else {
+    return id;
+  }
 };
 
 export const userAlreadyExists = async (email: string) => {
