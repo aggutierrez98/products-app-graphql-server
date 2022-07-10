@@ -154,3 +154,29 @@ export const deleteUser = async (id: string): Promise<UserServiceResponse> => {
     };
   }
 };
+
+export const activateUser = async (
+  id: string
+): Promise<UserServiceResponse> => {
+  try {
+    await UserInputValidator.deletev.validateAsync({ id });
+
+    const user = await UserSchema.findByIdAndUpdate(
+      id,
+      { active: true },
+      { new: true }
+    ).populate("role");
+
+    return {
+      ok: true,
+      error: null,
+      data: { user, token: null },
+    };
+  } catch (error: any) {
+    return {
+      ok: false,
+      error: { message: error.message },
+      data: { user: null, token: null },
+    };
+  }
+};

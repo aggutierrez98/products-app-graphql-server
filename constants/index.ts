@@ -36,6 +36,7 @@ const VENTAS_ROLE_QUERIES = [
 const ADMIN_ROLE_QUERIES = [
   ...VENTAS_ROLE_QUERIES,
   "deleteUser",
+  "activateUser",
   "uploadImage",
   "getRoles",
 ];

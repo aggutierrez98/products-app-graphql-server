@@ -1,5 +1,10 @@
 import { IResolvers } from "@graphql-tools/utils";
-import { createUser, deleteUser, updateUser } from "../../database/users";
+import {
+  activateUser,
+  createUser,
+  deleteUser,
+  updateUser,
+} from "../../database/users";
 import { ContextInterface, UserResults } from "../../interfaces/index";
 
 const mutation: IResolvers<any, ContextInterface> = {
@@ -30,6 +35,17 @@ const mutation: IResolvers<any, ContextInterface> = {
       if (contextError) return { error: contextError };
 
       const { ok, error, data } = await deleteUser(id);
+
+      if (ok) {
+        return data.user!;
+      } else {
+        return { error: error! };
+      }
+    },
+    async activateUser(__: void, { id }, { error: contextError }): UserResults {
+      if (contextError) return { error: contextError };
+
+      const { ok, error, data } = await activateUser(id);
 
       if (ok) {
         return data.user!;
