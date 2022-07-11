@@ -29,7 +29,8 @@ export const getUsers = async ({
   limit = 5,
   skip = 0,
 }: GetUsersParams): Promise<[number, User[]]> => {
-  const query = { active: true };
+  // const query = { active: true };
+  const query = {};
 
   const [total, users] = await Promise.all([
     UserSchema.countDocuments(query).limit(limit).skip(skip),
