@@ -1,0 +1,2 @@
+union UploadResponse = Product | User
+union CollectionsTypes = Product | User | Category

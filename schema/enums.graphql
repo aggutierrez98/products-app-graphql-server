@@ -1,0 +1,5 @@
+enum Collections {
+  users
+  categories
+  products
+}

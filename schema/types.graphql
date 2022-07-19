@@ -1,10 +1,3 @@
-type Error {
-  message: String!
-}
-type InputError {
-  error: Error!
-}
-
 type Role {
   id: ID!
   name: String!
@@ -26,7 +19,6 @@ type User {
   id: ID!
   name: String!
   email: String!
-  # password: String!
   image: String
   role: Role!
   active: Boolean!
@@ -39,14 +31,6 @@ type Category {
   user: User!
   active: Boolean!
 }
-
-enum Collections {
-  users
-  categories
-  products
-}
-
-scalar Upload
 
 type UploadImageResponse {
   imagePath: String!
@@ -86,5 +70,4 @@ type RenewResponse {
   token: String
 }
 
-union UploadResponse = Product | User
-union CollectionsTypes = Product | User | Category
+scalar Upload
