@@ -21,15 +21,11 @@ class ServerModel {
   private httpServer: Server;
   private port: string;
   private server!: ApolloServer<ExpressContext>;
-  // private graphQLMiddlewares:
-  //   | IMiddlewareGenerator<any, any, any>[]
-  //   | IMiddleware[];
 
   constructor() {
     this.app = express();
     this.port = process.env.PORT || "5200";
     this.httpServer = createServer(this.app);
-    // this.graphQLMiddlewares = [];
 
     this.middlewares();
 
@@ -48,11 +44,7 @@ class ServerModel {
   }
 
   connectGraphQL() {
-    // const schemaWithMiddleware: ReturnType<typeof applyMiddleware> =
-    //   applyMiddleware(schema, ...this.graphQLMiddlewares);
-
     this.server = new ApolloServer({
-      // schema: schemaWithMiddleware,
       schema,
       introspection: true,
       // csrfPrevention: true,
@@ -61,9 +53,6 @@ class ServerModel {
 
     // // CORS configuration
     // const corsOptions = {
-    //   // origin: "http://localhost:8081",
-    //   // origin: "http://192.168.0.100:8081",
-    //   origin: "http://181.89.152.171",
     //   credentials: true,
     // };
 
@@ -91,10 +80,6 @@ class ServerModel {
     this.app.use(graphqlUploadExpress({ maxFileSize: 2 * 1000 * 1000 }));
     this.app.use(cors());
     this.app.use(compression());
-
-    // this.graphQLMiddlewares = [
-    //   // permissions
-    // ];
   }
 
   listen() {
