@@ -48,7 +48,7 @@ enum Collections {
 
 scalar Upload
 
-type ImageResponse {
+type UploadImageResponse {
   imagePath: String!
 }
 
@@ -86,16 +86,5 @@ type RenewResponse {
   token: String
 }
 
-union AuthResponse = AuthResults | InputError
-union ProductResponse = Product | InputError
-union UserResponse = User | InputError
-union CategoryResponse = Category | InputError
-# union RoleResponse = Role | InputError
-union GetUsersResponse = GetUsersResults | InputError
-union GetCategoriesResponse = GetCategoriesResults | InputError
-union GetProductsResponse = GetProductsResults | InputError
-union GetRolesResponse = GetRolesResults | InputError
-union SearchResponse = SearchResults | InputError
-union UploadImageResponse = ImageResponse | InputError
-union UploadResponse = Product | User | InputError
+union UploadResponse = Product | User
 union CollectionsTypes = Product | User | Category

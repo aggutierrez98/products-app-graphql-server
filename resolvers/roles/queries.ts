@@ -6,8 +6,7 @@ import { RolesResults } from "../../interfaces/roles";
 const query: IResolvers<any, ContextInterface> = {
   Query: {
     async getRoles(_, __, { error: contextError }): RolesResults {
-      if (contextError) return { error: contextError };
-
+      if (contextError) throw contextError.message;
       const [count, roles] = await getRoles();
       return { roles, count };
     },

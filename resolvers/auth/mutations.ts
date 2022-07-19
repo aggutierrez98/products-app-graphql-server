@@ -9,14 +9,16 @@ const mutation: IResolvers<any, ContextInterface> = {
       { email, password },
       { error: contextError }
     ): UserResults {
-      if (contextError) return { error: contextError };
+      // if (contextError) return { error: contextError };
+      if (contextError) throw contextError.message;
 
       const { ok, error, data } = await login({ email, password });
 
       if (ok) {
         return data!;
       } else {
-        return { error: error! };
+        // return { error: error! };
+        throw error!.message;
       }
     },
     async googleSignIn(
@@ -24,14 +26,16 @@ const mutation: IResolvers<any, ContextInterface> = {
       { id_token },
       { error: contextError }
     ): UserResults {
-      if (contextError) return { error: contextError };
+      // if (contextError) return { error: contextError };
+      if (contextError) throw contextError.message;
 
       const { ok, error, data } = await googleSignIn(id_token);
 
       if (ok) {
         return data!;
       } else {
-        return { error: error! };
+        // return { error: error! };
+        throw error!.message;
       }
     },
   },

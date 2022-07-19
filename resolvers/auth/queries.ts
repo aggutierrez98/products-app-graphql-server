@@ -5,7 +5,8 @@ import { ContextInterface } from "../../interfaces";
 const query: IResolvers<any, ContextInterface> = {
   Query: {
     async currentUser(_, { error: contextError }, context) {
-      if (contextError) return { error: contextError };
+      // if (contextError) return { error: contextError };
+      if (contextError) throw contextError.message;
 
       return context.user;
     },

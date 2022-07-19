@@ -1,16 +1,16 @@
 type Mutation {
-  createCategory(category: AddCategoryInput!): CategoryResponse!
-  updateCategory(category: UpdateCategoryInput!): CategoryResponse!
-  deleteCategory(id: ID!): CategoryResponse!
-  createProduct(product: AddProductInput!): ProductResponse!
-  updateProduct(product: UpdateProductInput!): ProductResponse!
-  deleteProduct(id: ID!): ProductResponse!
-  createUser(user: AddUserInput!): AuthResponse!
-  updateUser(user: UpdateUserInput!): UserResponse!
-  deleteUser(id: ID!): UserResponse!
-  activateUser(id: ID!): UserResponse!
-  login(email: String!, password: String!): AuthResponse!
-  googleSignIn(id_token: String!): UserResponse!
+  createCategory(category: AddCategoryInput!): Category!
+  updateCategory(category: UpdateCategoryInput!): Category!
+  deleteCategory(id: ID!): Category!
+  createProduct(product: AddProductInput!): Product!
+  updateProduct(product: UpdateProductInput!): Product!
+  deleteProduct(id: ID!): Product!
+  createUser(user: AddUserInput!): AuthResults!
+  updateUser(user: UpdateUserInput!): User!
+  deleteUser(id: ID!): User!
+  activateUser(id: ID!): User!
+  login(email: String!, password: String!): AuthResults!
+  googleSignIn(id_token: String!): User!
   uploadImage(image: Upload!): UploadImageResponse!
   updateImage(
     id: ID!

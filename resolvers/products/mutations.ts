@@ -15,14 +15,15 @@ const mutation: IResolvers<any, ContextInterface> = {
       { product },
       { error: contextError }
     ): Promise<Product | InputError> {
-      if (contextError) return { error: contextError };
-
+      // if (contextError) return { error: contextError };
+      if (contextError) throw contextError.message;
       const { ok, error, data } = await createProduct(product);
 
       if (ok) {
         return data!;
       } else {
-        return { error: error! };
+        throw error!.message;
+        // return { error: error! };
       }
     },
     async updateProduct(
@@ -30,14 +31,15 @@ const mutation: IResolvers<any, ContextInterface> = {
       { product },
       { error: contextError }
     ): Promise<Product | InputError> {
-      if (contextError) return { error: contextError };
-
+      // if (contextError) return { error: contextError };
+      if (contextError) throw contextError.message;
       const { ok, error, data } = await updateProduct(product);
 
       if (ok) {
         return data!;
       } else {
-        return { error: error! };
+        throw error!.message;
+        // return { error: error! };
       }
     },
     async deleteProduct(
@@ -45,14 +47,15 @@ const mutation: IResolvers<any, ContextInterface> = {
       { id },
       { error: contextError }
     ): Promise<Product | InputError> {
-      if (contextError) return { error: contextError };
-
+      // if (contextError) return { error: contextError };
+      if (contextError) throw contextError.message;
       const { ok, error, data } = await deleteProduct(id);
 
       if (ok) {
         return data!;
       } else {
-        return { error: error! };
+        throw error!.message;
+        // return { error: error! };
       }
     },
   },

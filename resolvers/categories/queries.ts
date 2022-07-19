@@ -9,7 +9,8 @@ const query: IResolvers<any, ContextInterface> = {
       params,
       { error: contextError }
     ): CategoryResults {
-      if (contextError) return { error: contextError };
+      // if (contextError) return { error: contextError };
+      if (contextError) throw contextError.message;
 
       const [count, categories] = await getCategories(params);
       return { categories, count };
@@ -19,14 +20,15 @@ const query: IResolvers<any, ContextInterface> = {
       { id },
       { error: contextError }
     ): CategoryResults {
-      if (contextError) return { error: contextError };
+      if (contextError) throw contextError.message;
 
       const { data, error, ok } = await getCategory(id);
 
       if (ok) {
         return data!;
       } else {
-        return { error: error! };
+        throw error!.message;
+        // return { error: error! };
       }
     },
   },

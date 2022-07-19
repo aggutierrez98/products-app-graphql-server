@@ -17,12 +17,12 @@ const mutation: IResolvers<any, ContextInterface> = {
       { image },
       { error: contextError }
     ): UploadImageResponse {
-      if (contextError) return { error: contextError };
+      if (contextError) throw contextError.message;
       const { ok, error, data } = await uploadImage(image);
       if (ok && error) {
         return data!;
       } else {
-        return { error: error! };
+        throw error!.message;
       }
     },
     async updateImage(
@@ -30,12 +30,12 @@ const mutation: IResolvers<any, ContextInterface> = {
       params,
       { error: contextError }
     ): UpdateImageResponse {
-      if (contextError) return { error: contextError };
+      if (contextError) throw contextError.message;
       const { ok, error, data } = await updateImage(params);
       if (ok) {
         return data!;
       } else {
-        return { error: error! };
+        throw error!.message;
       }
     },
     async updateImageCloudinary(
@@ -43,12 +43,12 @@ const mutation: IResolvers<any, ContextInterface> = {
       params,
       { error: contextError }
     ): UpdateImageResponse {
-      if (contextError) return { error: contextError };
+      if (contextError) throw contextError.message;
       const { ok, error, data } = await updateImageCloudinary(params);
       if (ok) {
         return data!;
       } else {
-        return { error: error! };
+        throw error!.message;
       }
     },
   },

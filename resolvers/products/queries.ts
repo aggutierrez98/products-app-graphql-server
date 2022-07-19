@@ -10,24 +10,18 @@ const query: IResolvers<any, ContextInterface> = {
       params,
       { error: contextError }
     ): ProductResults {
-      if (contextError) return { error: contextError };
-
+      if (contextError) throw contextError.message;
       const [count, products] = await getProducts(params);
       return { products, count };
     },
-    async getProduct(
-      _: void,
-      { id },
-      { error: contextError }
-    ): ProductResults {
-      if (contextError) return { error: contextError };
-
+    async getProduct(_: void, { id }, { error: contextError }): ProductResults {
+      if (contextError) throw contextError.message;
       const { data, error, ok } = await getProduct(id);
 
       if (ok) {
         return data!;
       } else {
-        return { error: error! };
+        throw error!.message;
       }
     },
   },

@@ -14,14 +14,16 @@ const mutation: IResolvers<any, ContextInterface> = {
       { category },
       { error: contextError }
     ): Promise<Category | InputError> {
-      if (contextError) return { error: contextError };
+      // if (contextError) return { error: contextError };
+      if (contextError) throw contextError.message;
 
       const { ok, error, data } = await createCategory(category);
 
       if (ok) {
         return data!;
       } else {
-        return { error: error! };
+        throw error!.message;
+        // return { error: error! };
       }
     },
     async updateCategory(
@@ -29,14 +31,16 @@ const mutation: IResolvers<any, ContextInterface> = {
       { category },
       { error: contextError }
     ): Promise<Category | InputError> {
-      if (contextError) return { error: contextError };
+      // if (contextError) return { error: contextError };
+      if (contextError) throw contextError.message;
 
       const { ok, error, data } = await updateCategory(category);
 
       if (ok) {
         return data!;
       } else {
-        return { error: error! };
+        throw error!.message;
+        // return { error: error! };
       }
     },
     async deleteCategory(
@@ -44,14 +48,16 @@ const mutation: IResolvers<any, ContextInterface> = {
       { id },
       { error: contextError }
     ): Promise<Category | InputError> {
-      if (contextError) return { error: contextError };
+      // if (contextError) return { error: contextError };
+      if (contextError) throw contextError.message;
 
       const { ok, error, data } = await deleteCategory(id);
 
       if (ok) {
         return data!;
       } else {
-        return { error: error! };
+        throw error!.message;
+        // return { error: error! };
       }
     },
   },

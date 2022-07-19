@@ -16,7 +16,7 @@ const query: IResolvers<any, ContextInterface> = {
       params,
       { error: contextError }
     ): Promise<GetUsersResult | InputError> {
-      if (contextError) return { error: contextError };
+      if (contextError) throw contextError.message;
 
       const [count, users] = await getUsers(params);
       return {
@@ -24,17 +24,6 @@ const query: IResolvers<any, ContextInterface> = {
         count,
       };
     },
-    // async getUser(_: void, { id }, { error: contextError }): UserResults {
-    //   if (contextError) return { error: contextError };
-
-    //   const { data, error, ok } = await getUser(id);
-
-    //   if (ok) {
-    //     return data.user!;
-    //   } else {
-    //     return { error: error! };
-    //   }
-    // },
     async getUser(_: void, { id }, { error: contextError }): Promise<User> {
       if (contextError) throw new Error(contextError!.message);
 
