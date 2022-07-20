@@ -12,6 +12,8 @@ import {
   UpdateServiceResponse,
   UploadServiceResponse,
 } from "../interfaces/uploads";
+import { UserInputError } from "apollo-server-express";
+import { NotImplementedError } from "../models/errors";
 
 interface UploadImageParams {
   image: GraphQLUpload;
@@ -58,7 +60,7 @@ export const updateImage = async ({
         document = await UserSchema.findById(id).populate("role");
         if (!document)
           return {
-            error: { message: `User with id ${id} not exists` },
+            error: new UserInputError(`User with id ${id} not exists`),
             ok: false,
             data: null,
           };
@@ -77,7 +79,7 @@ export const updateImage = async ({
         ]);
         if (!document)
           return {
-            error: { message: `Product with id ${id} not exists` },
+            error: new UserInputError(`Product with id ${id} not exists`),
             ok: false,
             data: null,
           };
@@ -85,9 +87,9 @@ export const updateImage = async ({
 
       default:
         return {
-          error: {
-            message: `Collection ${collection} image upload not implemented yet`,
-          },
+          error: new NotImplementedError(
+            `Collection ${collection} image upload not implemented yet`
+          ),
           ok: false,
           data: null,
         };
@@ -116,7 +118,7 @@ export const updateImage = async ({
       error: null,
     };
   } catch (error: any) {
-    return { error: { message: error.message }, ok: false, data: null };
+    return { error, ok: false, data: null };
   }
 };
 
@@ -134,7 +136,7 @@ export const updateImageCloudinary = async ({
         document = await UserSchema.findById(id).populate("role");
         if (!document)
           return {
-            error: { message: `User with id ${id} not exists` },
+            error: new UserInputError(`User with id ${id} not exists`),
             ok: false,
             data: null,
           };
@@ -153,7 +155,7 @@ export const updateImageCloudinary = async ({
         ]);
         if (!document)
           return {
-            error: { message: `Product with id ${id} not exists` },
+            error: new UserInputError(`Product with id ${id} not exists`),
             ok: false,
             data: null,
           };
@@ -161,9 +163,9 @@ export const updateImageCloudinary = async ({
 
       default:
         return {
-          error: {
-            message: `Collection ${collection} image upload not implemented yet`,
-          },
+          error: new Error(
+            `Collection ${collection} image upload not implemented yet`
+          ),
           ok: false,
           data: null,
         };
@@ -205,6 +207,6 @@ export const updateImageCloudinary = async ({
       error: null,
     };
   } catch (error: any) {
-    return { error: { message: error.message }, ok: false, data: null };
+    return { error, ok: false, data: null };
   }
 };

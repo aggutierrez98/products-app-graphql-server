@@ -1,6 +1,7 @@
 import { IResolvers } from "@graphql-tools/utils";
+import { ForbiddenError } from "apollo-server-express";
 import { login, googleSignIn } from "../../database/auth";
-import { ContextInterface, UserResults } from "../../interfaces";
+import { ContextInterface, AuthResults } from "../../interfaces";
 
 const mutation: IResolvers<any, ContextInterface> = {
   Mutation: {
@@ -8,35 +9,25 @@ const mutation: IResolvers<any, ContextInterface> = {
       __: void,
       { email, password },
       { error: contextError }
-    ): UserResults {
-      // if (contextError) return { error: contextError };
-      if (contextError) throw contextError.message;
+    ): AuthResults {
+      if (contextError) throw contextError;
 
       const { ok, error, data } = await login({ email, password });
 
-      if (ok) {
-        return data!;
-      } else {
-        // return { error: error! };
-        throw error!.message;
-      }
+      if (ok) return data!;
+      else throw error;
     },
     async googleSignIn(
       __: void,
       { id_token },
       { error: contextError }
-    ): UserResults {
-      // if (contextError) return { error: contextError };
-      if (contextError) throw contextError.message;
+    ): AuthResults {
+      if (contextError) throw contextError;
 
       const { ok, error, data } = await googleSignIn(id_token);
 
-      if (ok) {
-        return data!;
-      } else {
-        // return { error: error! };
-        throw error!.message;
-      }
+      if (ok) return data!;
+      else throw error;
     },
   },
 };

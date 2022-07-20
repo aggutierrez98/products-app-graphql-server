@@ -3,6 +3,7 @@ import { UserSchema, User } from "../models";
 import { generateJWT } from "../helpers";
 import { UserInputValidator } from "../validators";
 import { UserServiceResponse } from "../interfaces/users";
+import { UserInputError } from "apollo-server-express";
 
 interface GetUsersParams {
   limit: number;
@@ -42,7 +43,11 @@ export const getUsers = async ({
 
 export const getUser = async (id: string): Promise<UserServiceResponse> => {
   try {
-    await UserInputValidator.getv.validateAsync({ id });
+    try {
+      await UserInputValidator.getv.validateAsync({ id });
+    } catch (error: any) {
+      throw new UserInputError(error.message);
+    }
 
     const user = await UserSchema.findById(id).populate("role");
 
@@ -54,7 +59,7 @@ export const getUser = async (id: string): Promise<UserServiceResponse> => {
   } catch (error: any) {
     return {
       ok: false,
-      error: { message: error.message },
+      error,
       data: { user: null },
     };
   }
@@ -66,7 +71,11 @@ export const createUser = async (
   try {
     const { name, email, password, role } = params;
 
-    await UserInputValidator.createv.validateAsync(params);
+    try {
+      await UserInputValidator.createv.validateAsync(params);
+    } catch (error: any) {
+      throw new UserInputError(error.message);
+    }
 
     const emailToSave = email.toUpperCase();
 
@@ -90,7 +99,7 @@ export const createUser = async (
   } catch (error: any) {
     return {
       ok: false,
-      error: { message: error.message },
+      error,
       data: { user: null, token: null },
     };
   }
@@ -102,7 +111,11 @@ export const updateUser = async (
   try {
     const { id, password, google, email, ...rest } = params;
 
-    await UserInputValidator.updatev.validateAsync(params);
+    try {
+      await UserInputValidator.updatev.validateAsync(params);
+    } catch (error: any) {
+      throw new UserInputError(error.message);
+    }
 
     const updateData = {
       ...rest,
@@ -126,7 +139,7 @@ export const updateUser = async (
   } catch (error: any) {
     return {
       ok: false,
-      error: { message: error.message },
+      error,
       data: { user: null, token: null },
     };
   }
@@ -134,8 +147,11 @@ export const updateUser = async (
 
 export const deleteUser = async (id: string): Promise<UserServiceResponse> => {
   try {
-    await UserInputValidator.deletev.validateAsync({ id });
-
+    try {
+      await UserInputValidator.deletev.validateAsync({ id });
+    } catch (error: any) {
+      throw new UserInputError(error.message);
+    }
     const user = await UserSchema.findByIdAndUpdate(
       id,
       { active: false },
@@ -150,7 +166,7 @@ export const deleteUser = async (id: string): Promise<UserServiceResponse> => {
   } catch (error: any) {
     return {
       ok: false,
-      error: { message: error.message },
+      error,
       data: { user: null, token: null },
     };
   }
@@ -160,7 +176,11 @@ export const activateUser = async (
   id: string
 ): Promise<UserServiceResponse> => {
   try {
-    await UserInputValidator.deletev.validateAsync({ id });
+    try {
+      await UserInputValidator.deletev.validateAsync({ id });
+    } catch (error: any) {
+      throw new UserInputError(error.message);
+    }
 
     const user = await UserSchema.findByIdAndUpdate(
       id,
@@ -176,7 +196,7 @@ export const activateUser = async (
   } catch (error: any) {
     return {
       ok: false,
-      error: { message: error.message },
+      error,
       data: { user: null, token: null },
     };
   }

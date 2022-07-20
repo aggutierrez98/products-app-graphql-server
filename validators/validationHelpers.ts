@@ -6,6 +6,7 @@ import {
   RoleSchema,
   UserSchema,
 } from "../models";
+import { AuthenticationError } from "apollo-server-express";
 
 export const categoryExists = async (id: ObjectId) => {
   if (!id) return undefined;
@@ -95,12 +96,12 @@ export const areValidCredentials = async (email: string, password: string) => {
   }).populate("role");
 
   if (!user) {
-    throw new Error("Wrong Credentials");
+    throw new AuthenticationError("Invalid Credentials");
   }
 
   const validPassword = bcryptjs.compareSync(password, user.password);
   if (!validPassword) {
-    throw new Error("Wrong Credentials");
+    throw new AuthenticationError("Invalid Credentials");
   }
 
   return user;

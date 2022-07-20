@@ -1,13 +1,8 @@
 import { IResolvers } from "@graphql-tools/utils";
+import { ForbiddenError } from "apollo-server-express";
 import { getUser, getUsers } from "../../database/users";
-import { ContextInterface, InputError } from "../../interfaces";
+import { ContextInterface, GetUsersResult } from "../../interfaces";
 import { User } from "../../models";
-// import { UserResults } from "../../interfaces/users";
-
-interface GetUsersResult {
-  users: User[];
-  count: number;
-}
 
 const query: IResolvers<any, ContextInterface> = {
   Query: {
@@ -15,8 +10,8 @@ const query: IResolvers<any, ContextInterface> = {
       _: void,
       params,
       { error: contextError }
-    ): Promise<GetUsersResult | InputError> {
-      if (contextError) throw contextError.message;
+    ): Promise<GetUsersResult> {
+      if (contextError) throw contextError;
 
       const [count, users] = await getUsers(params);
       return {
@@ -25,16 +20,12 @@ const query: IResolvers<any, ContextInterface> = {
       };
     },
     async getUser(_: void, { id }, { error: contextError }): Promise<User> {
-      if (contextError) throw new Error(contextError!.message);
+      if (contextError) throw contextError;
 
       const { data, error, ok } = await getUser(id);
 
-      if (ok) {
-        return data.user!;
-      } else {
-        // return { error: error! };
-        throw new Error(error!.message);
-      }
+      if (ok) return data.user!;
+      else throw error;
     },
   },
 };

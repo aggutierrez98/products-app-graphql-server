@@ -1,4 +1,5 @@
 import { IResolvers } from "@graphql-tools/utils";
+import { ForbiddenError } from "apollo-server-express";
 import {
   createCategory,
   deleteCategory,
@@ -14,51 +15,36 @@ const mutation: IResolvers<any, ContextInterface> = {
       { category },
       { error: contextError }
     ): Promise<Category | InputError> {
-      // if (contextError) return { error: contextError };
-      if (contextError) throw contextError.message;
+      if (contextError) throw contextError;
 
       const { ok, error, data } = await createCategory(category);
 
-      if (ok) {
-        return data!;
-      } else {
-        throw error!.message;
-        // return { error: error! };
-      }
+      if (ok) return data!;
+      else throw error;
     },
     async updateCategory(
       __: void,
       { category },
       { error: contextError }
     ): Promise<Category | InputError> {
-      // if (contextError) return { error: contextError };
-      if (contextError) throw contextError.message;
+      if (contextError) throw contextError;
 
       const { ok, error, data } = await updateCategory(category);
 
-      if (ok) {
-        return data!;
-      } else {
-        throw error!.message;
-        // return { error: error! };
-      }
+      if (ok) return data!;
+      else throw error;
     },
     async deleteCategory(
       __: void,
       { id },
       { error: contextError }
     ): Promise<Category | InputError> {
-      // if (contextError) return { error: contextError };
-      if (contextError) throw contextError.message;
+      if (contextError) throw contextError;
 
       const { ok, error, data } = await deleteCategory(id);
 
-      if (ok) {
-        return data!;
-      } else {
-        throw error!.message;
-        // return { error: error! };
-      }
+      if (ok) return data!;
+      else throw error;
     },
   },
 };

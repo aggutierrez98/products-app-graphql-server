@@ -1,13 +1,13 @@
-import { DatabaseServiceResponse, InputError } from '.';
-import { Category } from '../models/category';
+import { DatabaseServiceResponse, InputError } from ".";
+import { Category } from "../models/category";
 
 interface GetCategoriesResult {
-    categories: Category[];
-    count: number;
+  categories: Category[];
+  count: number;
 }
 
-export type CategoryResults = Promise<GetCategoriesResult | Category | InputError>
+export type CategoryResults = Promise<GetCategoriesResult | Category>;
 
 export interface CategoryServiceResponse extends DatabaseServiceResponse {
-    data: Category | null
+  data: Category | null;
 }

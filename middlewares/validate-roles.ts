@@ -1,17 +1,17 @@
-import { RoleSchema, User } from "../models";
 import { QUERIES_BY_ROLE, VALID_ROLES } from "../constants/index";
 import { Role } from "../models/role";
+import { ForbiddenError, UserInputError } from "apollo-server-express";
 
 export const validateRole = async (
   userRole: Role,
   query: string
-): Promise<[boolean, string | null]> => {
-  if (!userRole) return [false, "Role not exists"];
+): Promise<[boolean, any]> => {
+  if (!userRole) return [false, new UserInputError("Role don't exists")];
 
   const userRoleName = userRole.name as VALID_ROLES;
 
   if (!Object.values(VALID_ROLES).includes(userRoleName)) {
-    return [false, `Role ${userRoleName} is not valid`];
+    return [false, new UserInputError(`Role ${userRoleName} is not valid`)];
   }
 
   const isQueryAllowed = QUERIES_BY_ROLE[`${userRoleName}`]?.some((route) =>
@@ -19,7 +19,10 @@ export const validateRole = async (
   );
 
   if (!isQueryAllowed)
-    return [false, `Operation not allowed for ${userRoleName}`];
+    return [
+      false,
+      new ForbiddenError(`Operation not allowed for ${userRoleName}`),
+    ];
 
   return [true, null];
 };

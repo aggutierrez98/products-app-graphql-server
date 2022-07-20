@@ -2,6 +2,7 @@ import { ProductSchema, Product } from "../models";
 import { ObjectId } from "mongodb";
 import { ProductInputValidator } from "../validators";
 import { ProductServiceResponse } from "../interfaces/products";
+import { UserInputError } from "apollo-server-express";
 
 interface GetProductsParams {
   limit: number;
@@ -51,9 +52,15 @@ export const getProducts = async ({
   return [total, products];
 };
 
-export const getProduct = async (id: string): Promise<ProductServiceResponse> => {
+export const getProduct = async (
+  id: string
+): Promise<ProductServiceResponse> => {
   try {
-    await ProductInputValidator.getv.validateAsync({ id });
+    try {
+      await ProductInputValidator.getv.validateAsync({ id });
+    } catch (error: any) {
+      throw new UserInputError(error.message);
+    }
 
     const product = await ProductSchema.findById(id).populate([
       {
@@ -74,7 +81,7 @@ export const getProduct = async (id: string): Promise<ProductServiceResponse> =>
   } catch (error: any) {
     return {
       ok: false,
-      error: { message: error.message },
+      error,
       data: null,
     };
   }
@@ -84,7 +91,11 @@ export const createProduct = async (
   params: CreateProductParams
 ): Promise<ProductServiceResponse> => {
   try {
-    await ProductInputValidator.createv.validateAsync(params);
+    try {
+      await ProductInputValidator.createv.validateAsync(params);
+    } catch (error: any) {
+      throw new UserInputError(error.message);
+    }
 
     const dataToDB = {
       ...params,
@@ -117,7 +128,7 @@ export const createProduct = async (
   } catch (error: any) {
     return {
       ok: false,
-      error: { message: error.message },
+      error,
       data: null,
     };
   }
@@ -129,7 +140,11 @@ export const updateProduct = async (
   try {
     const { id, ...data } = params;
 
-    await ProductInputValidator.updatev.validateAsync(params);
+    try {
+      await ProductInputValidator.updatev.validateAsync(params);
+    } catch (error: any) {
+      throw new UserInputError(error.message);
+    }
 
     if (data.name) data.name = data.name.toUpperCase();
     // @ts-ignore:
@@ -158,15 +173,21 @@ export const updateProduct = async (
   } catch (error: any) {
     return {
       ok: false,
-      error: { message: error.message },
+      error,
       data: null,
     };
   }
 };
 
-export const deleteProduct = async (id: string): Promise<ProductServiceResponse> => {
+export const deleteProduct = async (
+  id: string
+): Promise<ProductServiceResponse> => {
   try {
-    await ProductInputValidator.deletev.validateAsync({ id });
+    try {
+      await ProductInputValidator.deletev.validateAsync({ id });
+    } catch (error: any) {
+      throw new UserInputError(error.message);
+    }
 
     const product = await ProductSchema.findByIdAndUpdate(
       id,
@@ -191,7 +212,7 @@ export const deleteProduct = async (id: string): Promise<ProductServiceResponse>
   } catch (error: any) {
     return {
       ok: false,
-      error: { message: error.message },
+      error,
       data: null,
     };
   }

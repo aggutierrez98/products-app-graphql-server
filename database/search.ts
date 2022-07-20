@@ -1,3 +1,4 @@
+import { UserInputError } from "apollo-server-express";
 import { isValidObjectId } from "mongoose";
 import { ALLOWED_COLLECTIONS } from "../constants";
 import { SearchServiceResponse } from "../interfaces/search";
@@ -104,7 +105,12 @@ export const search = async (
   let results: any = null;
 
   try {
-    SearchInputValidator.searchv.valid(params);
+    try {
+      await SearchInputValidator.searchv.validateAsync(params);
+    } catch (error: any) {
+      throw new UserInputError(error.message);
+    }
+
     switch (collection) {
       case "users":
         results = await searchUsers(term);
@@ -129,7 +135,7 @@ export const search = async (
     return {
       ok: false,
       results,
-      error: { message: error.message },
+      error,
     };
   }
 };

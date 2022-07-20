@@ -9,7 +9,5 @@ export interface UpdateServiceResponse extends DatabaseServiceResponse {
   data: Product | User | null;
 }
 
-export type UploadImageResponse = Promise<
-  { imagePath: string } | null | InputError
->;
-export type UpdateImageResponse = Promise<Product | User | null | InputError>;
+export type UploadImageResponse = Promise<{ imagePath: string } | null>;
+export type UpdateImageResponse = Promise<Product | User | null>;

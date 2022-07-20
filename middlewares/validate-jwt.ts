@@ -1,3 +1,4 @@
+import { AuthenticationError } from "apollo-server-express";
 import { Request } from "express";
 import jwt from "jsonwebtoken";
 import { User, UserSchema } from "../models";
@@ -7,7 +8,7 @@ export interface Context {
 }
 
 interface Response {
-  error: string | null;
+  error: any;
   data: User | null;
 }
 
@@ -17,7 +18,7 @@ export const validateJWT = async (req: Request): Promise<Response> => {
 
     if (!token)
       return {
-        error: "Must be authenticated",
+        error: new AuthenticationError("Must be authenticated"),
         data: null,
       };
 
@@ -28,21 +29,20 @@ export const validateJWT = async (req: Request): Promise<Response> => {
 
     if (!user)
       return {
-        error: "You must be logged in",
+        error: new AuthenticationError("Invalid token: expired or malformed"),
         data: null,
       };
 
     if (!user?.active)
       return {
-        error: "Invalid token: user not active",
+        error: new AuthenticationError("Invalid token: user not active"),
         data: null,
       };
 
     return { data: user, error: null };
   } catch (err: any) {
-    console.log(err);
     return {
-      error: "Invalid token: expired or malformed",
+      error: new Error("Unexpected error"),
       data: null,
     };
   }

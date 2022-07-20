@@ -14,17 +14,17 @@ export const contextMiddleware = async ({
 }: Context): Promise<ContextInterface> => {
   const query = req.body.query;
 
-  const isAuthQuery = NOT_AUTH_QUERIES.some((route) => query.includes(route));
+  const isProtectedQuery = !NOT_AUTH_QUERIES.some((route) =>
+    query.includes(route)
+  );
 
   try {
-    if (!isAuthQuery) {
+    if (isProtectedQuery) {
       const { error, data } = await validateJWT(req);
-      if (error) {
-        return { user: data, error: { message: error } };
-      }
 
-      if (data) {
-        const [isValidRole, message] = await validateRole(
+      if (error) return { user: data, error };
+      else if (data) {
+        const [isValidRole, error] = await validateRole(
           data.role as Role,
           query
         );
@@ -34,11 +34,11 @@ export const contextMiddleware = async ({
             user: data,
             error: null,
           };
-        }
-        return {
-          user: null,
-          error: message ? { message } : null,
-        };
+        } else
+          return {
+            user: null,
+            error,
+          };
       }
 
       return { user: data, error: null };
@@ -46,7 +46,6 @@ export const contextMiddleware = async ({
       return { user: null, error: null };
     }
   } catch (err) {
-    console.log({ err });
-    return { user: null, error: { message: "An unexpected error ocurred" } };
+    return { user: null, error: new Error("An unexpected error ocurred") };
   }
 };

@@ -2,6 +2,7 @@ import { CategorySchema, Category } from "../models";
 import { ObjectId } from "mongodb";
 import { CategoryInputValidator } from "../validators";
 import { CategoryServiceResponse } from "../interfaces/categories";
+import { UserInputError } from "apollo-server-express";
 interface getCategoriesParams {
   limit: number;
   skip: number;
@@ -59,7 +60,7 @@ export const getCategory = async (
   } catch (error: any) {
     return {
       ok: false,
-      error: { message: error.message },
+      error,
       data: null,
     };
   }
@@ -71,7 +72,11 @@ export const createCategory = async (
   try {
     const { user, name } = params;
 
-    await CategoryInputValidator.createv.validateAsync(params);
+    try {
+      await CategoryInputValidator.createv.validateAsync(params);
+    } catch (error: any) {
+      throw new UserInputError(error.message);
+    }
 
     const data = {
       name: name.toUpperCase(),
@@ -96,7 +101,7 @@ export const createCategory = async (
   } catch (error: any) {
     return {
       ok: false,
-      error: { message: error.message },
+      error,
       data: null,
     };
   }
@@ -108,7 +113,11 @@ export const updateCategory = async (
   try {
     const { id, ...data } = params;
 
-    await CategoryInputValidator.updatev.validateAsync(params);
+    try {
+      await CategoryInputValidator.updatev.validateAsync(params);
+    } catch (error: any) {
+      throw new UserInputError(error.message);
+    }
 
     if (data.name) data.name = data.name.toUpperCase();
     if (data.user) {
@@ -133,7 +142,7 @@ export const updateCategory = async (
   } catch (error: any) {
     return {
       ok: false,
-      error: { message: error.message },
+      error,
       data: null,
     };
   }
@@ -143,7 +152,11 @@ export const deleteCategory = async (
   id: string
 ): Promise<CategoryServiceResponse> => {
   try {
-    await CategoryInputValidator.deletev.validateAsync({ id });
+    try {
+      await CategoryInputValidator.deletev.validateAsync({ id });
+    } catch (error: any) {
+      throw new UserInputError(error.message);
+    }
 
     const category = await CategorySchema.findByIdAndUpdate(
       id,
@@ -164,7 +177,7 @@ export const deleteCategory = async (
   } catch (error: any) {
     return {
       ok: false,
-      error: { message: error.message },
+      error,
       data: null,
     };
   }

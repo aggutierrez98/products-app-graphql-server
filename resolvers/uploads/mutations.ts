@@ -1,4 +1,5 @@
 import { IResolvers } from "@graphql-tools/utils";
+import { ForbiddenError } from "apollo-server-express";
 import {
   updateImage,
   uploadImage,
@@ -17,39 +18,30 @@ const mutation: IResolvers<any, ContextInterface> = {
       { image },
       { error: contextError }
     ): UploadImageResponse {
-      if (contextError) throw contextError.message;
+      if (contextError) throw contextError;
       const { ok, error, data } = await uploadImage(image);
-      if (ok && error) {
-        return data!;
-      } else {
-        throw error!.message;
-      }
+      if (ok) return data!;
+      else throw error;
     },
     async updateImage(
       __: void,
       params,
       { error: contextError }
     ): UpdateImageResponse {
-      if (contextError) throw contextError.message;
+      if (contextError) throw contextError;
       const { ok, error, data } = await updateImage(params);
-      if (ok) {
-        return data!;
-      } else {
-        throw error!.message;
-      }
+      if (ok) return data!;
+      else throw error;
     },
     async updateImageCloudinary(
       __: void,
       params,
       { error: contextError }
     ): UpdateImageResponse {
-      if (contextError) throw contextError.message;
+      if (contextError) throw contextError;
       const { ok, error, data } = await updateImageCloudinary(params);
-      if (ok) {
-        return data!;
-      } else {
-        throw error!.message;
-      }
+      if (ok) return data!;
+      else throw error;
     },
   },
 };

@@ -3,6 +3,7 @@ import { generateJWT } from "../helpers";
 import { googleVerify } from "../helpers/google-verify";
 import { AuthInputValidator } from "../validators";
 import { UserServiceResponse } from "../interfaces/users";
+import { ForbiddenError, UserInputError } from "apollo-server-express";
 
 interface LoginParams {
   email: string;
@@ -15,7 +16,11 @@ export const login = async (
   try {
     const { email, password } = params;
 
-    AuthInputValidator.loginv.valid(params);
+    try {
+      await AuthInputValidator.loginv.validateAsync(params);
+    } catch (error: any) {
+      throw new UserInputError(error.message);
+    }
 
     const user = await AuthInputValidator.credentials(email, password);
     const token = await generateJWT(user.id);
@@ -28,7 +33,7 @@ export const login = async (
   } catch (error: any) {
     return {
       ok: false,
-      error: { message: error.message },
+      error,
       data: { user: null, token: null },
     };
   }
@@ -76,13 +81,7 @@ export const googleSignIn = async (
       await user.save();
     }
 
-    if (!user.active) {
-      return {
-        error: { message: "Server error: User blocked" },
-        ok: false,
-        data: { user: null, token: null },
-      };
-    }
+    if (!user.active) throw new ForbiddenError("Server error: User blocked");
 
     const token = await generateJWT(user.id);
 
@@ -92,9 +91,9 @@ export const googleSignIn = async (
       data: { user, token },
       token,
     };
-  } catch (e) {
+  } catch (error: any) {
     return {
-      error: { message: "Google token not valid" },
+      error,
       ok: false,
       data: { user: null, token: null },
     };
