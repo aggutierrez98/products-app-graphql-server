@@ -27,6 +27,6 @@ GraphQL, NodeJS, Apollo-Express, MongoDB, Typegoose and Typescript
 
 ### Demo
 
-[Products App](https://products-app-server.up.railway.app)
+[Products App](https://productos-app-server.fly.dev/)
 
 #### Full documentation of graphql queries can be found [here](https://studio.apollographql.com/graph/ProductosAppDocumentation)
