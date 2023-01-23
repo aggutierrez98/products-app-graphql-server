@@ -79,6 +79,8 @@ export const productAlreadyExists = async (name: string) => {
 };
 
 export const roleExists = async (id: ObjectId) => {
+  console.log("aca");
+
   if (id === undefined) return undefined;
 
   const role = await RoleSchema.findById(id);
@@ -87,6 +89,18 @@ export const roleExists = async (id: ObjectId) => {
     throw new Error(`Role with id ${id} dont exists`);
   } else {
     return id;
+  }
+};
+
+export const roleByNameExists = async (name: string) => {
+  if (name === undefined) return undefined;
+
+  const role = await RoleSchema.findOne({ name });
+
+  if (!role) {
+    throw new Error(`Role with name: ${name} dont exists`);
+  } else {
+    return name;
   }
 };
 

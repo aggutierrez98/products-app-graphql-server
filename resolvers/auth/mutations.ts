@@ -1,5 +1,4 @@
 import { IResolvers } from "@graphql-tools/utils";
-import { ForbiddenError } from "apollo-server-express";
 import { login, googleSignIn } from "../../database/auth";
 import { ContextInterface, AuthResults } from "../../interfaces";
 

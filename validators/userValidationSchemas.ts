@@ -1,6 +1,11 @@
 import joi from "joi";
 import { validateErrors } from "../helpers/validationErrorHelper";
-import { roleExists, userAlreadyExists, userExists } from "./validationHelpers";
+import {
+  roleByNameExists,
+  roleExists,
+  userAlreadyExists,
+  userExists,
+} from "./validationHelpers";
 
 export const getv = joi
   .object({
@@ -13,7 +18,10 @@ export const createv = joi
     name: joi.string().min(6).max(30).alphanum().required(),
     email: joi.string().email().required().external(userAlreadyExists),
     password: joi.string().alphanum().min(6).max(20).required(),
-    role: joi.string().hex().length(24).required().external(roleExists),
+    role: [
+      joi.string().required().external(roleByNameExists),
+      joi.string().hex().length(24).required().external(roleExists),
+    ],
   })
   .error(validateErrors);
 

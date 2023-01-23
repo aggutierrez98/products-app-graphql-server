@@ -7,7 +7,7 @@
     "start": "NODE_ENV=production node build/app.js",
     "build": "tsc -p . && ncp schema build/schema",
     "start:dev": "npm run build:dev",
-    "build:dev": "nodemon 'app.ts' --exec 'ts-node' app.ts -e ts,json,graphql"
+    "build:dev": "npx nodemon 'app.ts' --exec 'ts-node' app.ts -e ts,json,graphql"
   },
   "keywords": [],
   "author": "",

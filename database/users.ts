@@ -1,9 +1,10 @@
 import bcryptjs from "bcryptjs";
-import { UserSchema, User } from "../models";
+import { UserSchema, User, RoleSchema } from "../models";
 import { generateJWT } from "../helpers";
 import { UserInputValidator } from "../validators";
 import { UserServiceResponse } from "../interfaces/users";
 import { UserInputError } from "apollo-server-express";
+import { isValidObjectId } from "mongoose";
 
 interface GetUsersParams {
   limit: number;
@@ -30,7 +31,7 @@ export const getUsers = async ({
   limit = 5,
   skip = 0,
 }: GetUsersParams): Promise<[number, User[]]> => {
-  // const query = { active: true };
+  // // const query = { active: true };
   const query = {};
 
   const [total, users] = await Promise.all([
@@ -69,7 +70,7 @@ export const createUser = async (
   params: CreateUserParams
 ): Promise<UserServiceResponse> => {
   try {
-    const { name, email, password, role } = params;
+    let { name, email, password, role } = params;
 
     try {
       await UserInputValidator.createv.validateAsync(params);
@@ -79,7 +80,15 @@ export const createUser = async (
 
     const emailToSave = email.toUpperCase();
 
-    const user = new UserSchema({ name, email: emailToSave, password, role });
+    if (!isValidObjectId(role))
+      role = (await RoleSchema.findOne({ name: role }))!._id;
+
+    const user = new UserSchema({
+      name,
+      email: emailToSave,
+      password,
+      role,
+    });
 
     // Encriptar la contraseña
     const salt = bcryptjs.genSaltSync();
