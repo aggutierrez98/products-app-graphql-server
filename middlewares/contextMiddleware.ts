@@ -4,6 +4,7 @@ import { ContextInterface } from "../interfaces";
 import { validateJWT } from "./validate-jwt";
 import { validateRole } from "./validate-roles";
 import { Role } from "../models/role";
+import { SyntaxError } from "apollo-server-express";
 
 export interface Context {
   req: Request;
@@ -13,9 +14,14 @@ export const contextMiddleware = async ({
   req,
 }: Context): Promise<ContextInterface> => {
   const operationName = req.body.operationName;
+  if (!operationName)
+    return {
+      user: null,
+      error: new SyntaxError("Queries must have operation name"),
+    };
 
   const isProtectedQuery = !NOT_AUTH_QUERIES.some(
-    (query) => query.toLowerCase() === operationName.toLowerCase()
+    (query) => query.toLowerCase() === operationName?.toLowerCase()
   );
 
   try {

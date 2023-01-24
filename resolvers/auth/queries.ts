@@ -1,8 +1,7 @@
 import { IResolvers } from "@graphql-tools/utils";
-import { ForbiddenError } from "apollo-server-express";
-// import { renewToken } from "../../database/auth";
 import { ContextInterface } from "../../interfaces";
 import { User } from "../../models";
+// // import { renewToken } from "../../database/auth";
 
 const query: IResolvers<any, ContextInterface> = {
   Query: {
@@ -14,11 +13,14 @@ const query: IResolvers<any, ContextInterface> = {
       if (contextError) throw contextError;
       return context.user;
     },
-    // async renewToken(_: void, { error: contextError }): UserResults {
-    //   if (contextError) return { error: contextError };
-
-    //   return context.user;
-    // },
+    // // async renewToken(
+    // //   _,
+    // //   { error: contextError },
+    // //   context
+    // // ): Promise<User | null> {
+    // //   if (contextError) throw contextError;
+    // //   return context.user;
+    // // },
   },
 };
 

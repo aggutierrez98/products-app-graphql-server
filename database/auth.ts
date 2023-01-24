@@ -39,26 +39,26 @@ export const login = async (
   }
 };
 
-// export const renewToken = async (
-//   token: string
-// ): Promise<UserServiceResponse> => {
-//   try {
-//     // const user = await AuthInputValidator.credentials(email, password);
-//     // const token = await generateJWT(user.id);
+// // export const renewToken = async (
+// //   token: string
+// // ): Promise<UserServiceResponse> => {
+// //   try {
+// //     // const user = await AuthInputValidator.credentials(email, password);
+// //     // const token = await generateJWT(user.id);
 
-//     return {
-//       error: null,
-//       ok: true,
-//       data: { user, token },
-//     };
-//   } catch (error: any) {
-//     return {
-//       ok: false,
-//       error: { message: error.message },
-//       data: { user: null, token: null },
-//     };
-//   }
-// };
+// //     return {
+// //       error: null,
+// //       ok: true,
+// //       data: { user, token },
+// //     };
+// //   } catch (error: any) {
+// //     return {
+// //       ok: false,
+// //       error: { message: error.message },
+// //       data: { user: null, token: null },
+// //     };
+// //   }
+// // };
 
 export const googleSignIn = async (
   id_token: string

@@ -5,16 +5,11 @@ import cors from "cors";
 import { createServer, Server } from "http";
 import { ApolloServer, ExpressContext } from "apollo-server-express";
 import expressPlayGround from "graphql-playground-middleware-express";
-// @ts-ignore
-import graphqlUploadExpress from "graphql-upload/graphqlUploadExpress.js";
 import { v2 as cloudinary } from "cloudinary";
 import schema from "../schema";
 import { contextMiddleware } from "../middlewares/contextMiddleware";
-// import {
-//   applyMiddleware,
-//   IMiddleware,
-//   IMiddlewareGenerator,
-// } from "graphql-middleware";
+// @ts-ignore
+import graphqlUploadExpress from "graphql-upload/graphqlUploadExpress.js";
 
 class ServerModel {
   private app: Application;
@@ -47,19 +42,19 @@ class ServerModel {
     this.server = new ApolloServer({
       schema,
       introspection: true,
-      // csrfPrevention: true,
+      csrfPrevention: true,
       context: contextMiddleware,
     });
 
-    // // CORS configuration
-    // const corsOptions = {
-    //   credentials: true,
-    // };
+    // CORS configuration
+    const corsOptions = {
+      credentials: true,
+    };
 
     this.server.start().then(() => {
       this.server.applyMiddleware({
         app: this.app,
-        // cors: corsOptions
+        cors: corsOptions,
       });
     });
   }
