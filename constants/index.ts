@@ -4,41 +4,41 @@ export const ALLOWED_COLLECTIONS: ["users", "categories", "products"] = [
   "products",
 ];
 
-export const NOT_AUTH_QUERIES = ["login", "createUser", "googleSignIn"];
+export const NOT_AUTH_QUERIES = ["Login", "CreateUser", "GoogleSignIn"];
 
 export enum VALID_ROLES {
   ADMIN_ROLE = "ADMIN_ROLE",
-  VENTAS_ROLE = "VENTAS_ROLE",
+  MANAGER_ROLE = "MANAGER_ROLE",
   USER_ROLE = "USER_ROLE",
 }
 
 const USER_ROLE_QUERIES = [
-  "currentUser",
+  "CurrentUser",
   "getUsers",
   "getUser",
   "getCategories",
   "getRoles",
   "getProducts",
   "getProduct",
-  "createUser",
-  "updateUser",
-  "updateImage",
-  "updateImageCloudinary",
+  "CreateUser",
+  "UpdateUser",
+  "UpdateImage",
+  "UpdateImageCloudinary",
 ];
-const VENTAS_ROLE_QUERIES = [
+const MANAGER_ROLE_QUERIES = [
   ...USER_ROLE_QUERIES,
-  "createCategory",
-  "updateCategory",
-  "deleteCategory",
-  "createProduct",
-  "updateProduct",
-  "deleteProduct",
+  "CreateCategory",
+  "UpdateCategory",
+  "DeleteCategory",
+  "CreateProduct",
+  "UpdateProduct",
+  "DeleteProduct",
 ];
 const ADMIN_ROLE_QUERIES = [
-  ...VENTAS_ROLE_QUERIES,
-  "deleteUser",
-  "activateUser",
-  "uploadImage",
+  ...MANAGER_ROLE_QUERIES,
+  "DeleteUser",
+  "ActivateUser",
+  "UploadImage",
 ];
 
 type RoleQueriesMap = {
@@ -47,6 +47,6 @@ type RoleQueriesMap = {
 
 export const QUERIES_BY_ROLE: RoleQueriesMap = {
   ADMIN_ROLE: ADMIN_ROLE_QUERIES,
-  VENTAS_ROLE: VENTAS_ROLE_QUERIES,
+  MANAGER_ROLE: MANAGER_ROLE_QUERIES,
   USER_ROLE: USER_ROLE_QUERIES,
 };

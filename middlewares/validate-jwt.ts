@@ -2,7 +2,7 @@ import { AuthenticationError } from "apollo-server-express";
 import { Request } from "express";
 import jwt from "jsonwebtoken";
 import { UserFromDB } from "../interfaces";
-import { User, UserSchema } from "../models";
+import { UserSchema } from "../models";
 
 export interface Context {
   req: Request;
@@ -16,7 +16,6 @@ interface Response {
 export const validateJWT = async (req: Request): Promise<Response> => {
   try {
     const token = req.headers["x-token"];
-
     if (!token)
       return {
         error: new AuthenticationError("Must be authenticated"),
@@ -43,7 +42,7 @@ export const validateJWT = async (req: Request): Promise<Response> => {
     return { data: user, error: null };
   } catch (err: any) {
     return {
-      error: new Error("Unexpected error"),
+      error: new Error(`Unexpected error: ${err}`),
       data: null,
     };
   }

@@ -12,10 +12,10 @@ export interface Context {
 export const contextMiddleware = async ({
   req,
 }: Context): Promise<ContextInterface> => {
-  const query = req.body.query;
+  const operationName = req.body.operationName;
 
-  const isProtectedQuery = !NOT_AUTH_QUERIES.some((route) =>
-    query.includes(route)
+  const isProtectedQuery = !NOT_AUTH_QUERIES.some(
+    (query) => query.toLowerCase() === operationName.toLowerCase()
   );
 
   try {
@@ -26,7 +26,7 @@ export const contextMiddleware = async ({
       else if (data) {
         const [isValidRole, error] = await validateRole(
           data.role as Role,
-          query
+          operationName
         );
 
         if (isValidRole) {

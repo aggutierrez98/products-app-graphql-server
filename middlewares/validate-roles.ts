@@ -4,7 +4,7 @@ import { ForbiddenError, UserInputError } from "apollo-server-express";
 
 export const validateRole = async (
   userRole: Role,
-  query: string
+  operationName: string
 ): Promise<[boolean, any]> => {
   if (!userRole) return [false, new UserInputError("Role don't exists")];
 
@@ -14,8 +14,8 @@ export const validateRole = async (
     return [false, new UserInputError(`Role ${userRoleName} is not valid`)];
   }
 
-  const isQueryAllowed = QUERIES_BY_ROLE[`${userRoleName}`]?.some((route) =>
-    query.includes(route)
+  const isQueryAllowed = QUERIES_BY_ROLE[`${userRoleName}`]?.some(
+    (query) => operationName.toLowerCase() === query.toLowerCase()
   );
 
   if (!isQueryAllowed)
