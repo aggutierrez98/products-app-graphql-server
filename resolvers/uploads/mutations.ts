@@ -10,6 +10,7 @@ import {
   UpdateImageResponse,
   UploadImageResponse,
 } from "../../interfaces/uploads";
+import { validateOwnUser } from "../../middlewares/validateOwnUser";
 
 const mutation: IResolvers<any, ContextInterface> = {
   Mutation: {
@@ -26,9 +27,11 @@ const mutation: IResolvers<any, ContextInterface> = {
     async updateImage(
       __: void,
       params,
-      { error: contextError }
+      { error: contextError, user: loggedUser }
     ): UpdateImageResponse {
       if (contextError) throw contextError;
+      validateOwnUser({ loggedUser, userId: params.id });
+
       const { ok, error, data } = await updateImage(params);
       if (ok) return data!;
       else throw error;
@@ -36,9 +39,11 @@ const mutation: IResolvers<any, ContextInterface> = {
     async updateImageCloudinary(
       __: void,
       params,
-      { error: contextError }
+      { error: contextError, user: loggedUser }
     ): UpdateImageResponse {
       if (contextError) throw contextError;
+      validateOwnUser({ loggedUser, userId: params.id });
+
       const { ok, error, data } = await updateImageCloudinary(params);
       if (ok) return data!;
       else throw error;

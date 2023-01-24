@@ -128,7 +128,6 @@ export const updateImageCloudinary = async ({
   image,
 }: UpdateImageParams): Promise<UpdateServiceResponse> => {
   let document: (Document<any, BeAnObject, any> & User & Product) | null;
-  let newResult: (Document<any, BeAnObject, any> & User & Product) | null;
 
   try {
     switch (collection) {

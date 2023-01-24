@@ -1,6 +1,7 @@
 import { AuthenticationError } from "apollo-server-express";
 import { Request } from "express";
 import jwt from "jsonwebtoken";
+import { UserFromDB } from "../interfaces";
 import { User, UserSchema } from "../models";
 
 export interface Context {
@@ -9,7 +10,7 @@ export interface Context {
 
 interface Response {
   error: any;
-  data: User | null;
+  data: UserFromDB | null;
 }
 
 export const validateJWT = async (req: Request): Promise<Response> => {

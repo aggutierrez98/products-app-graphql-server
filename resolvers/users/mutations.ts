@@ -1,4 +1,5 @@
 import { IResolvers } from "@graphql-tools/utils";
+import { UserInputError } from "apollo-server-express";
 import {
   activateUser,
   createUser,
@@ -6,6 +7,7 @@ import {
   updateUser,
 } from "../../database/users";
 import { ContextInterface, AuthResults } from "../../interfaces/index";
+import { validateOwnUser } from "../../middlewares/validateOwnUser";
 import { User } from "../../models";
 
 const mutation: IResolvers<any, ContextInterface> = {
@@ -22,9 +24,10 @@ const mutation: IResolvers<any, ContextInterface> = {
     async updateUser(
       __: void,
       { user },
-      { error: contextError }
+      { error: contextError, user: loggedUser }
     ): Promise<User> {
       if (contextError) throw contextError;
+      validateOwnUser({ loggedUser, userId: user.id, userRoleId: user.role });
 
       const { ok, error, data } = await updateUser(user);
 

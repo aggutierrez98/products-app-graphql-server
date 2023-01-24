@@ -1,6 +1,6 @@
-import { User } from "../models";
+import { UserFromDB } from "./users";
 export interface ContextInterface {
-  user: User | null;
+  user: UserFromDB | null;
   error: {
     message: string;
   } | null;

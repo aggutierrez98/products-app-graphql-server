@@ -1,4 +1,9 @@
-import { DatabaseServiceResponse, InputError } from ".";
+import {
+  BeAnObject,
+  IObjectWithTypegooseFunction,
+} from "@typegoose/typegoose/lib/types";
+import { Document } from "mongoose";
+import { DatabaseServiceResponse } from ".";
 import { User } from "../models";
 
 export interface GetUsersResult {
@@ -17,3 +22,11 @@ export interface UserServiceResponse extends DatabaseServiceResponse {
     token?: unknown;
   };
 }
+
+export type UserFromDB =
+  | (Document<any, BeAnObject, any> &
+      User &
+      IObjectWithTypegooseFunction & {
+        _id: any;
+      })
+  | null;

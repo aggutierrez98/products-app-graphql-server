@@ -17,10 +17,13 @@ const USER_ROLE_QUERIES = [
   "getUsers",
   "getUser",
   "getCategories",
+  "getRoles",
   "getProducts",
   "getProduct",
   "createUser",
   "updateUser",
+  "updateImage",
+  "updateImageCloudinary",
 ];
 const VENTAS_ROLE_QUERIES = [
   ...USER_ROLE_QUERIES,
@@ -30,15 +33,12 @@ const VENTAS_ROLE_QUERIES = [
   "createProduct",
   "updateProduct",
   "deleteProduct",
-  "updateImage",
-  "updateImageCloudinary",
 ];
 const ADMIN_ROLE_QUERIES = [
   ...VENTAS_ROLE_QUERIES,
   "deleteUser",
   "activateUser",
   "uploadImage",
-  "getRoles",
 ];
 
 type RoleQueriesMap = {
